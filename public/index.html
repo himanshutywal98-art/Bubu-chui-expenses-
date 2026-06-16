@@ -341,7 +341,7 @@
 <!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 /* ══ FIREBASE CONFIG ══ */
 const firebaseConfig = {
@@ -406,21 +406,21 @@ function setSyncStatus(status){
 function startListeners(){
   setSyncStatus('syncing');
   // Expenses
-  onSnapshot(query(collection(db,'expenses'),orderBy('date','desc')), snap=>{
-    expenses=snap.docs.map(d=>({id:d.id,...d.data()}));
+  onSnapshot(collection(db,'expenses'), snap=>{
+    expenses=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
     renderDash();renderLedger();renderEFSubPage();renderInvSubPage();
     setSyncStatus('online');
   }, err=>{ console.error('expenses:',err); setSyncStatus('offline'); });
 
   // Investments
-  onSnapshot(query(collection(db,'investments'),orderBy('date','desc')), snap=>{
-    investments=snap.docs.map(d=>({id:d.id,...d.data()}));
+  onSnapshot(collection(db,'investments'), snap=>{
+    investments=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
     renderDash();renderLedger();renderInvSubPage();
   }, err=>console.error('investments:',err));
 
   // Emergency Fund
-  onSnapshot(query(collection(db,'emergencyFund'),orderBy('date','desc')), snap=>{
-    emergencyFund=snap.docs.map(d=>({id:d.id,...d.data()}));
+  onSnapshot(collection(db,'emergencyFund'), snap=>{
+    emergencyFund=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
     renderDash();renderLedger();renderEFSubPage();
   }, err=>console.error('ef:',err));
 
