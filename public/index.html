@@ -413,24 +413,31 @@ function setSyncStatus(status){
 
 /* ══ REAL-TIME LISTENERS ══ */
 function startListeners(){
+  setSyncStatus('syncing');
   // Expenses
   onSnapshot(query(collection(db,'expenses'),orderBy('date','desc')), snap=>{
     expenses=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderDash();renderLedger();renderEFSubPage();renderInvSubPage();
     setSyncStatus('online');
-  }, ()=>setSyncStatus('offline'));
+  }, err=>{ console.error('expenses:',err); setSyncStatus('offline'); });
 
   // Investments
   onSnapshot(query(collection(db,'investments'),orderBy('date','desc')), snap=>{
     investments=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderDash();renderLedger();renderInvSubPage();
-  });
+  }, err=>console.error('investments:',err));
 
   // Emergency Fund
   onSnapshot(query(collection(db,'emergencyFund'),orderBy('date','desc')), snap=>{
     emergencyFund=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderDash();renderLedger();renderEFSubPage();
-  });
+  }, err=>console.error('ef:',err));
+
+  // If no response in 8 seconds, show offline but keep app usable
+  setTimeout(()=>{
+    const chip=document.getElementById('syncChip');
+    if(chip && chip.classList.contains('syncing')) setSyncStatus('offline');
+  }, 8000);
 }
 
 /* ══ NAVIGATION ══ */
@@ -789,14 +796,12 @@ document.getElementById('monthChip').textContent=new Date().toLocaleDateString('
 ['expDate','invDate','efDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today();});
 buildExpPills();buildInvTypePills();
 
-// Start Firebase listeners
-startListeners();
+// Hide loading screen immediately — don't wait for Firebase
+const ls=document.getElementById('loadingScreen');
+if(ls){ ls.classList.add('hide'); setTimeout(()=>{ if(ls.parentNode) ls.parentNode.removeChild(ls); },600); }
 
-// Hide loading screen after first data arrives
-setTimeout(()=>{
-  document.getElementById('loadingScreen').classList.add('hide');
-  setTimeout(()=>document.getElementById('loadingScreen').remove(),600);
-},2500);
+// Start Firebase in background
+try{ startListeners(); }catch(e){ setSyncStatus('offline'); }
 </script>
 </body>
 </html>
