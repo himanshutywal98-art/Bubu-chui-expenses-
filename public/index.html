@@ -27,72 +27,53 @@
     }
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
     body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;background:var(--surface);color:var(--text);min-height:100vh;overscroll-behavior:none;}
-
-    /* NAV */
     .nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:.5px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);z-index:200;}
     .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;border:none;background:none;font-family:inherit;cursor:pointer;color:var(--text-faint);font-size:10px;}
     .nav-btn.act{color:var(--green);}
     .nav-icon{font-size:22px;line-height:1;}
-
-    /* HEADER */
     .app-hdr{background:var(--green);padding:calc(var(--safe-top) + 14px) 16px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
     .hdr-l{display:flex;align-items:center;gap:10px;}
     .hdr-logo{width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
     .hdr-title{font-size:16px;font-weight:600;color:#fff;}
     .hdr-sub{font-size:11px;color:rgba(255,255,255,.7);}
-    .month-chip{font-size:11px;background:rgba(255,255,255,.2);color:#fff;border-radius:20px;padding:3px 10px;}
-
-    /* PAGES */
+    .sync-chip{font-size:11px;border-radius:20px;padding:3px 10px;}
+    .sync-chip.online{background:rgba(255,255,255,.2);color:#fff;}
+    .sync-chip.offline{background:rgba(255,100,100,.3);color:#fff;}
+    .sync-chip.syncing{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);}
     .page{display:none;padding-bottom:calc(var(--safe-bottom) + 70px);}
     .page.act{display:block;}
-
-    /* PAGE-LEVEL TABS (Log / Ledger) */
     .page-tabs{display:flex;background:var(--white);border-bottom:.5px solid var(--border);position:sticky;top:56px;z-index:50;}
     .ptab{flex:1;font-size:13px;font-weight:500;padding:12px 4px;text-align:center;color:var(--text-muted);border:none;background:none;font-family:inherit;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-.5px;}
     .ptab.act{color:var(--green);border-bottom-color:var(--green);}
-
-    /* SUB-PAGES */
     .sub-page{display:none;} .sub-page.act{display:block;}
-
-    /* CARDS */
     .card{background:var(--white);border-radius:14px;border:.5px solid var(--border);overflow:hidden;margin:0 14px;}
     .card+.card{margin-top:10px;}
     .sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 14px 8px;}
     .sec-title{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
     .sec-act{font-size:12px;color:var(--green);background:none;border:none;font-family:inherit;cursor:pointer;}
-
-    /* KPI GRID */
     .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px 14px 0;}
     .kpi{background:var(--white);border-radius:12px;padding:12px 14px;border:.5px solid var(--border);}
     .kpi-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;}
     .kpi-val{font-size:20px;font-weight:600;}
     .kpi-note{font-size:11px;color:var(--text-faint);margin-top:2px;}
     .cg{color:var(--green);} .cr{color:var(--red);} .ca{color:var(--amber);} .cp{color:var(--purple);} .cb{color:var(--blue);}
-
-    /* 3-BUCKET STRIP */
     .buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 14px 0;}
     .bucket{background:var(--white);border-radius:10px;padding:10px 6px;border:.5px solid var(--border);text-align:center;}
     .bucket-icon{font-size:16px;margin-bottom:3px;}
     .bucket-amt{font-size:12px;font-weight:600;}
     .bucket-sub{font-size:10px;color:var(--text-faint);margin-top:1px;}
     .bucket-label{font-size:10px;color:var(--text-muted);margin-top:2px;}
-
-    /* PROGRESS BAR */
     .prog-card{background:var(--white);border-radius:12px;padding:14px;border:.5px solid var(--border);margin:0 14px;}
     .prog-header{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px;}
     .prog-track{height:8px;background:var(--surface);border-radius:4px;overflow:hidden;}
     .prog-fill{height:100%;border-radius:4px;transition:width .4s;}
     .prog-sub{font-size:11px;color:var(--text-faint);margin-top:5px;}
-
-    /* BARS */
     .bars-wrap{padding:14px;display:flex;flex-direction:column;gap:10px;}
     .bar-row{display:flex;align-items:center;gap:10px;}
     .bar-label{font-size:12px;color:var(--text-muted);width:110px;flex-shrink:0;}
     .bar-track{flex:1;height:7px;background:var(--surface);border-radius:4px;overflow:hidden;}
     .bar-fill{height:100%;border-radius:4px;transition:width .4s;}
     .bar-val{font-size:11px;width:75px;text-align:right;flex-shrink:0;color:var(--text-faint);}
-
-    /* DONUT */
     .donut-wrap{padding:14px;display:flex;align-items:center;gap:16px;}
     .donut-legend{flex:1;display:flex;flex-direction:column;gap:7px;}
     .leg-row{display:flex;align-items:center;gap:7px;font-size:12px;}
@@ -100,8 +81,6 @@
     .leg-name{flex:1;color:var(--text-muted);}
     .leg-amt{font-weight:500;color:var(--text);}
     .leg-pct{font-size:11px;color:var(--text-faint);min-width:30px;text-align:right;}
-
-    /* LOG FORM */
     .log-wrap{padding:14px;}
     .log-input{width:100%;font-size:15px;padding:13px 14px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;margin-bottom:8px;}
     .log-input:focus{border-color:var(--green);background:var(--white);}
@@ -113,18 +92,12 @@
     .log-btn:disabled{opacity:.5;}
     .log-hint{font-size:12px;color:var(--text-faint);min-height:18px;padding:2px 0;}
     .log-hint.ok{color:var(--green);} .log-hint.err{color:var(--red);}
-    .log-select{width:100%;font-size:14px;padding:12px 14px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;margin-bottom:8px;appearance:none;-webkit-appearance:none;}
-    .log-select:focus{border-color:var(--green);background:var(--white);}
     .date-input{width:100%;font-size:13px;padding:11px 12px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;margin-bottom:8px;}
     .date-input:focus{border-color:var(--green);background:var(--white);}
-
-    /* CAT PILLS */
     .pills-scroll{display:flex;gap:6px;overflow-x:auto;padding:0 14px;scrollbar-width:none;margin-bottom:10px;}
     .pills-scroll::-webkit-scrollbar{display:none;}
     .pill{flex-shrink:0;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;}
     .pill.sel{background:var(--green-light);border-color:var(--green);color:var(--green-dark);font-weight:500;}
-
-    /* QUICK ADD GRID */
     .quick-grid{display:grid;grid-template-columns:repeat(2,1fr);}
     .quick-btn{padding:14px;border:none;background:none;font-family:inherit;cursor:pointer;text-align:left;border-right:.5px solid var(--border);border-bottom:.5px solid var(--border);}
     .quick-btn:nth-child(even){border-right:none;}
@@ -133,13 +106,9 @@
     .quick-icon{font-size:18px;}
     .quick-name{font-size:13px;font-weight:500;margin-top:4px;}
     .quick-amt{font-size:11px;color:var(--text-faint);}
-
-    /* INVESTMENT TYPES */
     .inv-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;}
     .inv-type{font-size:11px;padding:7px 4px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;text-align:center;font-family:inherit;}
     .inv-type.sel{background:var(--blue-light);border-color:var(--blue);color:#0C447C;font-weight:500;}
-
-    /* EF BALANCE CARD */
     .ef-balance-card{background:linear-gradient(135deg,var(--blue) 0%,#185FA5 100%);border-radius:14px;margin:14px 14px 0;padding:18px;}
     .ef-bal-label{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:4px;}
     .ef-bal-val{font-size:28px;font-weight:700;color:#fff;}
@@ -149,14 +118,10 @@
     .ef-target-val{font-size:13px;font-weight:600;color:#fff;}
     .ef-prog-track{height:6px;background:rgba(255,255,255,.25);border-radius:3px;margin-top:8px;overflow:hidden;}
     .ef-prog-fill{height:100%;background:#fff;border-radius:3px;transition:width .4s;}
-
-    /* INV TARGET CARD */
     .inv-target-card{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border-radius:14px;margin:14px 14px 0;padding:18px;}
     .inv-target-label{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:4px;}
     .inv-target-val{font-size:28px;font-weight:700;color:#fff;}
     .inv-target-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:4px;}
-
-    /* LEDGER ENTRIES */
     .ledger-tabs{display:flex;border-bottom:.5px solid var(--border);}
     .ltab{flex:1;font-size:12px;padding:10px 4px;text-align:center;color:var(--text-muted);cursor:pointer;border:none;background:none;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-.5px;}
     .ltab.act{color:var(--green);font-weight:600;border-bottom-color:var(--green);}
@@ -172,21 +137,27 @@
     .entry-del:active{color:var(--red);}
     .empty{padding:36px 16px;text-align:center;color:var(--text-faint);font-size:14px;}
     .empty-icon{font-size:36px;display:block;margin-bottom:10px;}
-
-    /* CSV ROW */
     .csv-row{display:flex;gap:8px;align-items:center;padding:0 14px 12px;}
     .csv-select{flex:1;font-size:13px;padding:9px 12px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;}
     .csv-btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;border:none;background:var(--green);color:#fff;font-family:inherit;cursor:pointer;white-space:nowrap;}
-
-    /* TOAST */
     .toast{position:fixed;bottom:calc(var(--safe-bottom) + 72px);left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999;}
     .toast.show{opacity:1;}
-
-    /* INFO BANNER */
     .info-banner{margin:10px 14px 0;background:var(--green-light);border:.5px solid #9FE1CB;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--green-dark);line-height:1.5;}
+    .loading-screen{position:fixed;inset:0;background:var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity .5s;}
+    .loading-screen.hide{opacity:0;pointer-events:none;}
+    .loading-logo{font-size:48px;margin-bottom:16px;}
+    .loading-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;}
+    .loading-sub{font-size:14px;color:rgba(255,255,255,.7);}
   </style>
 </head>
 <body>
+
+<!-- LOADING SCREEN -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-logo">📊</div>
+  <div class="loading-title">BCE Tracker</div>
+  <div class="loading-sub" id="loadingSub">Connecting to cloud...</div>
+</div>
 
 <!-- HEADER -->
 <div class="app-hdr">
@@ -197,86 +168,58 @@
       <div class="hdr-sub">BuBu Chui Enterprises</div>
     </div>
   </div>
-  <div class="month-chip" id="monthChip"></div>
+  <div class="sync-chip online" id="syncChip">● Live</div>
 </div>
 
-<!-- ════════ PAGE: DASHBOARD ════════ -->
+<!-- DASHBOARD -->
 <div class="page act" id="pageDash">
-
   <div class="kpi-grid">
     <div class="kpi"><div class="kpi-label">Expenses this month</div><div class="kpi-val cp" id="dExp">₹0</div><div class="kpi-note" id="dExpN">of ₹1,61,000 budget</div></div>
     <div class="kpi"><div class="kpi-label">Invested this month</div><div class="kpi-val cg" id="dInv">₹0</div><div class="kpi-note" id="dInvN">of ₹1,00,000 target</div></div>
     <div class="kpi"><div class="kpi-label">Emergency fund added</div><div class="kpi-val cb" id="dEF">₹0</div><div class="kpi-note" id="dEFN">of ₹61,000 target</div></div>
-    <div class="kpi"><div class="kpi-label">Savings rate</div><div class="kpi-val cg" id="dSav">—</div><div class="kpi-note">income deployed well?</div></div>
+    <div class="kpi"><div class="kpi-label">Savings rate</div><div class="kpi-val cg" id="dSav">—</div><div class="kpi-note">of ₹3,28,000 income</div></div>
   </div>
-
-  <div class="sec-hdr"><div class="sec-title">Monthly income allocation</div></div>
+  <div class="sec-hdr"><div class="sec-title">Monthly allocation</div></div>
   <div class="buckets">
-    <div class="bucket">
-      <div class="bucket-icon">🛒</div>
-      <div class="bucket-amt cp" id="bkExp">₹0</div>
-      <div class="bucket-sub" id="bkExpSub">0% used</div>
-      <div class="bucket-label">Expenses</div>
-    </div>
-    <div class="bucket">
-      <div class="bucket-icon">📈</div>
-      <div class="bucket-amt cg" id="bkInv">₹0</div>
-      <div class="bucket-sub" id="bkInvSub">0% of target</div>
-      <div class="bucket-label">Investments</div>
-    </div>
-    <div class="bucket">
-      <div class="bucket-icon">🛡️</div>
-      <div class="bucket-amt cb" id="bkEF">₹0</div>
-      <div class="bucket-sub" id="bkEFSub">0% of target</div>
-      <div class="bucket-label">Emergency</div>
-    </div>
+    <div class="bucket"><div class="bucket-icon">🛒</div><div class="bucket-amt cp" id="bkExp">₹0</div><div class="bucket-sub" id="bkExpSub">0% used</div><div class="bucket-label">Expenses</div></div>
+    <div class="bucket"><div class="bucket-icon">📈</div><div class="bucket-amt cg" id="bkInv">₹0</div><div class="bucket-sub" id="bkInvSub">0% of target</div><div class="bucket-label">Investments</div></div>
+    <div class="bucket"><div class="bucket-icon">🛡️</div><div class="bucket-amt cb" id="bkEF">₹0</div><div class="bucket-sub" id="bkEFSub">0% of target</div><div class="bucket-label">Emergency</div></div>
   </div>
-
-  <div class="sec-hdr"><div class="sec-title">Expense budget progress</div></div>
+  <div class="sec-hdr"><div class="sec-title">Expense budget</div></div>
   <div class="prog-card">
     <div class="prog-header"><span id="progLabel">₹0 spent</span><span id="progPct">0%</span></div>
     <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%;background:var(--green);"></div></div>
     <div class="prog-sub" id="progSub">₹1,61,000 remaining</div>
   </div>
-
   <div class="sec-hdr"><div class="sec-title">Emergency fund — all time</div></div>
   <div class="prog-card">
-    <div class="prog-header"><span id="efTotalLabel">Total saved: ₹0</span><span id="efTotalPct">0%</span></div>
-    <div class="prog-track"><div class="prog-fill" id="efTotalFill" style="width:0%;background:var(--blue);"></div></div>
-    <div class="prog-sub" id="efTotalSub">Target: ₹19,68,000 (6 months income)</div>
+    <div class="prog-header"><span id="efTotalLabel">Total: ₹3,50,000</span><span id="efTotalPct">17%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="efTotalFill" style="width:17%;background:var(--blue);"></div></div>
+    <div class="prog-sub" id="efTotalSub">Target: ₹19,68,000 · ₹16,18,000 to go</div>
   </div>
-
   <div class="sec-hdr"><div class="sec-title">Expense breakdown</div></div>
   <div class="card"><div class="bars-wrap" id="dashBars"><div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No expenses logged yet</div></div></div>
-
   <div class="sec-hdr"><div class="sec-title">Investment breakdown</div></div>
   <div class="card"><div class="bars-wrap" id="invBars"><div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No investments logged yet</div></div></div>
-
   <div class="sec-hdr"><div class="sec-title">Expense category split</div></div>
-  <div class="card">
-    <div class="donut-wrap">
-      <canvas id="donut" width="120" height="120" aria-label="Expense category donut chart"></canvas>
-      <div class="donut-legend" id="donutLegend"><div style="font-size:13px;color:var(--text-faint);">Log expenses to see breakdown</div></div>
-    </div>
-  </div>
-
+  <div class="card"><div class="donut-wrap"><canvas id="donut" width="120" height="120"></canvas><div class="donut-legend" id="donutLegend"><div style="font-size:13px;color:var(--text-faint);">Log expenses to see breakdown</div></div></div></div>
   <div style="height:10px;"></div>
 </div>
 
-<!-- ════════ PAGE: LOG ════════ -->
+<!-- LOG -->
 <div class="page" id="pageLog">
   <div class="page-tabs">
-    <button class="ptab act" id="ptExp"  onclick="setLogTab('Exp')">🛒 Expenses</button>
-    <button class="ptab"     id="ptInv"  onclick="setLogTab('Inv')">📈 Investments</button>
-    <button class="ptab"     id="ptEF"   onclick="setLogTab('EF')">🛡️ Emergency</button>
+    <button class="ptab act" id="ptExp" onclick="setLogTab('Exp')">🛒 Expenses</button>
+    <button class="ptab" id="ptInv" onclick="setLogTab('Inv')">📈 Investments</button>
+    <button class="ptab" id="ptEF" onclick="setLogTab('EF')">🛡️ Emergency</button>
   </div>
 
-  <!-- SUB: EXPENSES -->
+  <!-- EXPENSES SUB -->
   <div class="sub-page act" id="subExp">
     <div class="sec-hdr" style="padding-top:16px;"><div class="sec-title">Log an expense</div></div>
     <div class="card">
       <div class="log-wrap">
-        <input class="log-input" id="expDesc" placeholder="What did you spend on? e.g. Zomato, Big Bazaar..." autocomplete="off"/>
+        <input class="log-input" id="expDesc" placeholder="e.g. Zomato dinner, Big Bazaar groceries..." autocomplete="off"/>
         <input class="date-input" id="expDate" type="date"/>
         <div class="log-row">
           <input class="log-amt" id="expAmt" type="number" placeholder="₹ Amount" min="1" inputmode="decimal"/>
@@ -299,7 +242,7 @@
     <div style="height:10px;"></div>
   </div>
 
-  <!-- SUB: INVESTMENTS -->
+  <!-- INVESTMENTS SUB -->
   <div class="sub-page" id="subInv">
     <div class="inv-target-card">
       <div class="inv-target-label">Invested this month</div>
@@ -326,32 +269,32 @@
     <div class="sec-hdr"><div class="sec-title">Quick add</div></div>
     <div class="card">
       <div class="quick-grid">
-        <button class="quick-btn" onclick="quickInv('SIP — Mutual Fund','Mutual Fund',0)"><div class="quick-icon">📊</div><div class="quick-name">Mutual Fund SIP</div><div class="quick-amt">Enter amount</div></button>
-        <button class="quick-btn" onclick="quickInv('PPF deposit','PPF',0)"><div class="quick-icon">🏦</div><div class="quick-name">PPF deposit</div><div class="quick-amt">Enter amount</div></button>
-        <button class="quick-btn" onclick="quickInv('Gold Bond','Gold Bond',0)"><div class="quick-icon">🥇</div><div class="quick-name">Gold Bond</div><div class="quick-amt">Enter amount</div></button>
-        <button class="quick-btn" onclick="quickInv('NPS contribution','NPS',0)"><div class="quick-icon">🏛️</div><div class="quick-name">NPS</div><div class="quick-amt">Enter amount</div></button>
+        <button class="quick-btn" onclick="quickInv('SIP — Mutual Fund','Mutual Fund')"><div class="quick-icon">📊</div><div class="quick-name">Mutual Fund SIP</div><div class="quick-amt">Tap to fill</div></button>
+        <button class="quick-btn" onclick="quickInv('PPF deposit','PPF')"><div class="quick-icon">🏦</div><div class="quick-name">PPF deposit</div><div class="quick-amt">Tap to fill</div></button>
+        <button class="quick-btn" onclick="quickInv('Gold Bond','Gold Bond')"><div class="quick-icon">🥇</div><div class="quick-name">Gold Bond</div><div class="quick-amt">Tap to fill</div></button>
+        <button class="quick-btn" onclick="quickInv('NPS contribution','NPS')"><div class="quick-icon">🏛️</div><div class="quick-name">NPS</div><div class="quick-amt">Tap to fill</div></button>
       </div>
     </div>
     <div style="height:10px;"></div>
   </div>
 
-  <!-- SUB: EMERGENCY FUND -->
+  <!-- EMERGENCY SUB -->
   <div class="sub-page" id="subEF">
     <div class="ef-balance-card">
       <div class="ef-bal-label">Total emergency fund balance</div>
       <div class="ef-bal-val" id="efTotalBal">₹3,50,000</div>
-      <div class="ef-bal-sub" id="efBalSub">Starting corpus + deposits logged</div>
+      <div class="ef-bal-sub" id="efBalSub">Starting ₹3,50,000 + deposits</div>
       <div class="ef-target-row">
         <div class="ef-target-label">Target (6 months income)</div>
         <div class="ef-target-val">₹19,68,000</div>
       </div>
       <div class="ef-prog-track"><div class="ef-prog-fill" id="efBalFill" style="width:17.8%;"></div></div>
     </div>
-    <div class="info-banner">Monthly target: ₹61,000 · This builds your 6-month corpus in ~2.5 years</div>
+    <div class="info-banner">Monthly target: ₹61,000 · Builds your 6-month corpus in ~2.5 years</div>
     <div class="sec-hdr" style="padding-top:16px;"><div class="sec-title">Log a deposit</div></div>
     <div class="card">
       <div class="log-wrap">
-        <input class="log-input" id="efDesc" placeholder="e.g. Monthly EF deposit, Bonus transfer to EF..." autocomplete="off"/>
+        <input class="log-input" id="efDesc" placeholder="e.g. Monthly EF deposit, Bonus transfer..." autocomplete="off"/>
         <input class="date-input" id="efDate" type="date"/>
         <div class="log-row">
           <input class="log-amt" id="efAmt" type="number" placeholder="₹ Amount" min="1" inputmode="decimal"/>
@@ -370,29 +313,26 @@
   </div>
 </div>
 
-<!-- ════════ PAGE: LEDGER ════════ -->
+<!-- LEDGER -->
 <div class="page" id="pageLedger">
   <div class="page-tabs">
     <button class="ptab act" id="ltpExp" onclick="setLedgerType('exp')">🛒 Expenses</button>
-    <button class="ptab"     id="ltpInv" onclick="setLedgerType('inv')">📈 Investments</button>
-    <button class="ptab"     id="ltpEF"  onclick="setLedgerType('ef')">🛡️ Emergency</button>
+    <button class="ptab" id="ltpInv" onclick="setLedgerType('inv')">📈 Investments</button>
+    <button class="ptab" id="ltpEF" onclick="setLedgerType('ef')">🛡️ Emergency</button>
   </div>
-
   <div class="sec-hdr">
     <div class="sec-title" id="ledgerTitle">Expense entries</div>
     <button class="sec-act" onclick="doClear()">Clear all</button>
   </div>
-
-  <div style="display:flex;gap:8px;align-items:center;padding:0 14px 10px;">
+  <div class="csv-row">
     <select id="csvMonth" class="csv-select"></select>
     <button onclick="downloadCSV()" class="csv-btn">⬇ CSV</button>
   </div>
-
   <div class="card">
     <div class="ledger-tabs">
-      <button class="ltab act" id="ltAll"   onclick="setLTab('all')">All</button>
-      <button class="ltab"     id="ltToday" onclick="setLTab('today')">Today</button>
-      <button class="ltab"     id="ltWeek"  onclick="setLTab('week')">This week</button>
+      <button class="ltab act" id="ltAll" onclick="setLTab('all')">All</button>
+      <button class="ltab" id="ltToday" onclick="setLTab('today')">Today</button>
+      <button class="ltab" id="ltWeek" onclick="setLTab('week')">This week</button>
     </div>
     <div id="ledgerBody"></div>
   </div>
@@ -401,14 +341,30 @@
 
 <!-- BOTTOM NAV -->
 <nav class="nav">
-  <button class="nav-btn act" id="navDash"   onclick="goPage('Dash')">  <span class="nav-icon">📊</span>Dashboard</button>
-  <button class="nav-btn"     id="navLog"    onclick="goPage('Log')">   <span class="nav-icon">➕</span>Log</button>
-  <button class="nav-btn"     id="navLedger" onclick="goPage('Ledger')"><span class="nav-icon">📋</span>Ledger</button>
+  <button class="nav-btn act" id="navDash" onclick="goPage('Dash')"><span class="nav-icon">📊</span>Dashboard</button>
+  <button class="nav-btn" id="navLog" onclick="goPage('Log')"><span class="nav-icon">➕</span>Log</button>
+  <button class="nav-btn" id="navLedger" onclick="goPage('Ledger')"><span class="nav-icon">📋</span>Ledger</button>
 </nav>
-
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+/* ══ FIREBASE CONFIG ══ */
+const firebaseConfig = {
+  apiKey: "AIzaSyCA_DBE1thwJre-kF5yr6UddpkSNcrRKyk",
+  authDomain: "bce-expenses.firebaseapp.com",
+  projectId: "bce-expenses",
+  storageBucket: "bce-expenses.firebasestorage.app",
+  messagingSenderId: "436760257099",
+  appId: "1:436760257099:web:187b2b6766aa43395763ce"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
 /* ══ CONSTANTS ══ */
 const BUDGET=161000, INV_TARGET=100000, EF_TARGET_MONTHLY=61000;
 const EF_TOTAL_TARGET=1968000, EF_STARTING=350000, INCOME=328000;
@@ -420,18 +376,13 @@ const CATS={
   'Transport':     {c:'#888780',bg:'#F1EFE8',t:'#444441',b:16000},
   'Entertainment': {c:'#D4537E',bg:'#FBEAF0',t:'#72243E',b:15000},
   'Shopping':      {c:'#BA7517',bg:'#FAEEDA',t:'#633806',b:15000},
-  'Health':        {c:'#639922',bg:'#EAF3DE',t:'#27500A',b:5000 },
-  'Utilities':     {c:'#D85A30',bg:'#FAECE7',t:'#712B13',b:4000 },
+  'Health':        {c:'#639922',bg:'#EAF3DE',t:'#27500A',b:5000},
+  'Utilities':     {c:'#D85A30',bg:'#FAECE7',t:'#712B13',b:4000},
   'Household':     {c:'#7F77DD',bg:'#EEEDFE',t:'#26215C',b:11000},
-  'Other':         {c:'#B4B2A9',bg:'#F1EFE8',t:'#5F5E5A',b:0   }
+  'Other':         {c:'#B4B2A9',bg:'#F1EFE8',t:'#5F5E5A',b:0}
 };
-
 const INV_TYPES=['Mutual Fund','SIP','PPF','NPS','Gold Bond','Stocks','FD','Other'];
-const INV_COLORS={
-  'Mutual Fund':'#1D9E75','SIP':'#378ADD','PPF':'#534AB7',
-  'NPS':'#D4537E','Gold Bond':'#BA7517','Stocks':'#D85A30',
-  'FD':'#639922','Other':'#888780'
-};
+const INV_COLORS={'Mutual Fund':'#1D9E75','SIP':'#378ADD','PPF':'#534AB7','NPS':'#D4537E','Gold Bond':'#BA7517','Stocks':'#D85A30','FD':'#639922','Other':'#888780'};
 
 /* ══ STATE ══ */
 let expenses=[], investments=[], emergencyFund=[];
@@ -439,31 +390,47 @@ let selExpCat=null, selInvType=null;
 let ledgerType='exp', ledgerTab='all';
 
 /* ══ UTILS ══ */
-const fmt   = n=>'₹'+Math.round(n).toLocaleString('en-IN');
-const today = ()=>new Date().toISOString().split('T')[0];
-const fmtD  = s=>new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'});
-const curM  = ()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');};
-const pct   = (a,b)=>b>0?Math.min(100,Math.round(a/b*100)):0;
-
-/* ══ STORAGE ══ */
-function save(){
-  try{
-    localStorage.setItem('bce_exp',JSON.stringify(expenses));
-    localStorage.setItem('bce_inv',JSON.stringify(investments));
-    localStorage.setItem('bce_ef', JSON.stringify(emergencyFund));
-  }catch(e){}
-}
-function load(){
-  try{expenses    =JSON.parse(localStorage.getItem('bce_exp')||'[]');}catch(e){expenses=[];}
-  try{investments =JSON.parse(localStorage.getItem('bce_inv')||'[]');}catch(e){investments=[];}
-  try{emergencyFund=JSON.parse(localStorage.getItem('bce_ef')||'[]');}catch(e){emergencyFund=[];}
-}
+const fmt  = n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const today= ()=>new Date().toISOString().split('T')[0];
+const fmtD = s=>new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+const curM = ()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');};
+const pct  = (a,b)=>b>0?Math.min(100,Math.round(a/b*100)):0;
 
 /* ══ TOAST ══ */
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* ══ SYNC STATUS ══ */
+function setSyncStatus(status){
+  const chip=document.getElementById('syncChip');
+  if(status==='online'){chip.textContent='● Live';chip.className='sync-chip online';}
+  else if(status==='syncing'){chip.textContent='↻ Syncing';chip.className='sync-chip syncing';}
+  else{chip.textContent='○ Offline';chip.className='sync-chip offline';}
+}
+
+/* ══ REAL-TIME LISTENERS ══ */
+function startListeners(){
+  // Expenses
+  onSnapshot(query(collection(db,'expenses'),orderBy('date','desc')), snap=>{
+    expenses=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderDash();renderLedger();renderEFSubPage();renderInvSubPage();
+    setSyncStatus('online');
+  }, ()=>setSyncStatus('offline'));
+
+  // Investments
+  onSnapshot(query(collection(db,'investments'),orderBy('date','desc')), snap=>{
+    investments=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderDash();renderLedger();renderInvSubPage();
+  });
+
+  // Emergency Fund
+  onSnapshot(query(collection(db,'emergencyFund'),orderBy('date','desc')), snap=>{
+    emergencyFund=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderDash();renderLedger();renderEFSubPage();
+  });
 }
 
 /* ══ NAVIGATION ══ */
@@ -474,12 +441,12 @@ function goPage(p){
   });
   const titles={Dash:'Dashboard',Log:'Log Entry',Ledger:'Ledger'};
   document.getElementById('pageTitle').textContent=titles[p];
-  if(p==='Dash')   renderDash();
   if(p==='Ledger'){renderLedger();buildMonthSelector();}
-  if(p==='Log')    refreshLogSubPages();
+  if(p==='Log'){renderEFSubPage();renderInvSubPage();}
 }
+window.goPage=goPage;
 
-/* ══ LOG PAGE TABS ══ */
+/* ══ LOG TABS ══ */
 function setLogTab(t){
   ['Exp','Inv','EF'].forEach(x=>{
     document.getElementById('pt'+x).classList.toggle('act',x===t);
@@ -488,23 +455,22 @@ function setLogTab(t){
   if(t==='EF') renderEFSubPage();
   if(t==='Inv') renderInvSubPage();
 }
-function refreshLogSubPages(){renderEFSubPage();renderInvSubPage();}
+window.setLogTab=setLogTab;
 
-/* ══ EXPENSE PILLS ══ */
+/* ══ PILLS ══ */
 function buildExpPills(){
   document.getElementById('expPills').innerHTML=Object.keys(CATS).map(c=>
     `<div class="pill${selExpCat===c?' sel':''}" onclick="pickExpCat('${c}')">${c}</div>`
   ).join('');
 }
-function pickExpCat(c){selExpCat=selExpCat===c?null:c;buildExpPills();}
+window.pickExpCat=c=>{selExpCat=selExpCat===c?null:c;buildExpPills();};
 
-/* ══ INVESTMENT TYPE PILLS ══ */
 function buildInvTypePills(){
   document.getElementById('invTypePills').innerHTML=INV_TYPES.map(t=>
     `<div class="inv-type${selInvType===t?' sel':''}" onclick="pickInvType('${t}')">${t}</div>`
   ).join('');
 }
-function pickInvType(t){selInvType=selInvType===t?null:t;buildInvTypePills();}
+window.pickInvType=t=>{selInvType=selInvType===t?null:t;buildInvTypePills();};
 
 /* ══ AI CATEGORISE ══ */
 async function aiCat(desc){
@@ -525,149 +491,115 @@ async function aiCat(desc){
 /* ══ ADD EXPENSE ══ */
 async function addExpense(){
   const desc=document.getElementById('expDesc').value.trim();
-  const amt =parseFloat(document.getElementById('expAmt').value);
+  const amt=parseFloat(document.getElementById('expAmt').value);
   const date=document.getElementById('expDate').value||today();
   const h=document.getElementById('expHint');
   if(!desc){h.textContent='Enter a description';h.className='log-hint err';return;}
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('expBtn');
   btn.disabled=true;btn.textContent='...';
+  setSyncStatus('syncing');
   const cat=selExpCat||await aiCat(desc);
-  expenses.unshift({id:Date.now(),desc,amt,cat,date,month:date.substring(0,7)});
-  save();
+  await addDoc(collection(db,'expenses'),{desc,amt,cat,date,month:date.substring(0,7),createdAt:Date.now()});
   document.getElementById('expDesc').value='';
   document.getElementById('expAmt').value='';
   document.getElementById('expDate').value=today();
   selExpCat=null;buildExpPills();
   btn.disabled=false;btn.textContent='Add';
   setTimeout(()=>{h.textContent='Select a category or let AI pick it';h.className='log-hint';},2500);
-  toast('Expense logged — '+cat);
-  renderDash();
+  toast('✓ Expense saved — synced to both phones');
 }
+window.addExpense=addExpense;
 
 /* ══ QUICK EXPENSE ══ */
-function quickExp(desc,cat,amt){
-  expenses.unshift({id:Date.now(),desc,amt,cat,date:today(),month:curM()});
-  save();toast('Added: '+desc);renderDash();
-}
+window.quickExp=async(desc,cat,amt)=>{
+  setSyncStatus('syncing');
+  await addDoc(collection(db,'expenses'),{desc,amt,cat,date:today(),month:curM(),createdAt:Date.now()});
+  toast('✓ '+desc+' added');
+};
 
 /* ══ ADD INVESTMENT ══ */
-function addInvestment(){
+async function addInvestment(){
   const desc=document.getElementById('invDesc').value.trim();
-  const amt =parseFloat(document.getElementById('invAmt').value);
+  const amt=parseFloat(document.getElementById('invAmt').value);
   const date=document.getElementById('invDate').value||today();
   const type=selInvType||'Mutual Fund';
   const h=document.getElementById('invHint');
   if(!desc){h.textContent='Enter a description';h.className='log-hint err';return;}
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
-  investments.unshift({id:Date.now(),desc,amt,type,date,month:date.substring(0,7)});
-  save();
+  const btn=document.getElementById('invBtn');
+  btn.disabled=true;btn.textContent='...';
+  setSyncStatus('syncing');
+  await addDoc(collection(db,'investments'),{desc,amt,type,date,month:date.substring(0,7),createdAt:Date.now()});
   document.getElementById('invDesc').value='';
   document.getElementById('invAmt').value='';
   document.getElementById('invDate').value=today();
   selInvType=null;buildInvTypePills();
-  h.textContent='Investment logged ✓';h.className='log-hint ok';
+  btn.disabled=false;btn.textContent='Add';
+  h.textContent='✓ Investment synced to both phones';h.className='log-hint ok';
   setTimeout(()=>{h.textContent='Log each SIP, MF, PPF, gold bond separately';h.className='log-hint';},2500);
-  toast('Investment logged — '+type);
-  renderInvSubPage();renderDash();
+  toast('✓ Investment saved');
 }
+window.addInvestment=addInvestment;
 
 /* ══ QUICK INVESTMENT ══ */
-function quickInv(desc,type,amt){
+window.quickInv=(desc,type)=>{
   document.getElementById('invDesc').value=desc;
   selInvType=type;buildInvTypePills();
   document.getElementById('invAmt').focus();
-}
+};
 
 /* ══ ADD EMERGENCY FUND ══ */
-function addEF(){
+async function addEF(){
   const desc=document.getElementById('efDesc').value.trim()||'EF deposit';
-  const amt =parseFloat(document.getElementById('efAmt').value);
+  const amt=parseFloat(document.getElementById('efAmt').value);
   const date=document.getElementById('efDate').value||today();
   const h=document.getElementById('efHint');
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
-  emergencyFund.unshift({id:Date.now(),desc,amt,date,month:date.substring(0,7)});
-  save();
+  const btn=document.getElementById('efBtn');
+  btn.disabled=true;btn.textContent='...';
+  setSyncStatus('syncing');
+  await addDoc(collection(db,'emergencyFund'),{desc,amt,date,month:date.substring(0,7),createdAt:Date.now()});
   document.getElementById('efDesc').value='';
   document.getElementById('efAmt').value='';
   document.getElementById('efDate').value=today();
-  h.textContent='Deposit logged ✓';h.className='log-hint ok';
-  setTimeout(()=>{h.textContent='This month\'s target: ₹61,000';h.className='log-hint';},2500);
-  toast('EF deposit logged — '+fmt(amt));
-  renderEFSubPage();renderDash();
+  btn.disabled=false;btn.textContent='Add';
+  h.textContent='✓ Deposit synced to both phones';h.className='log-hint ok';
+  setTimeout(()=>{h.textContent="This month's target: ₹61,000";h.className='log-hint';},2500);
+  toast('✓ EF deposit saved — '+fmt(amt));
 }
-
-/* ══ RENDER INV SUB PAGE ══ */
-function renderInvSubPage(){
-  const m=curM();
-  const mInv=investments.filter(e=>e.month===m);
-  const total=mInv.reduce((s,e)=>s+e.amt,0);
-  const remaining=Math.max(0,INV_TARGET-total);
-  const p=pct(total,INV_TARGET);
-  document.getElementById('invMonthTotal').textContent=fmt(total);
-  document.getElementById('invMonthSub').textContent=`Target: ${fmt(INV_TARGET)} · ${fmt(remaining)} remaining`;
-  document.getElementById('invProgFill').style.width=p+'%';
-}
-
-/* ══ RENDER EF SUB PAGE ══ */
-function renderEFSubPage(){
-  const m=curM();
-  const allEF=emergencyFund.reduce((s,e)=>s+e.amt,0);
-  const totalBal=EF_STARTING+allEF;
-  const balPct=pct(totalBal,EF_TOTAL_TARGET);
-  const mEF=emergencyFund.filter(e=>e.month===m).reduce((s,e)=>s+e.amt,0);
-  const mPct=pct(mEF,EF_TARGET_MONTHLY);
-  const mRemaining=Math.max(0,EF_TARGET_MONTHLY-mEF);
-
-  document.getElementById('efTotalBal').textContent=fmt(totalBal);
-  document.getElementById('efBalSub').textContent=`Starting ₹3,50,000 + ${fmt(allEF)} deposits`;
-  document.getElementById('efBalFill').style.width=balPct+'%';
-  document.getElementById('efMLabel').textContent=fmt(mEF)+' deposited';
-  document.getElementById('efMPct').textContent=mPct+'%';
-  document.getElementById('efMFill').style.width=mPct+'%';
-  document.getElementById('efMSub').textContent=mRemaining>0?fmt(mRemaining)+' remaining this month':'✓ Monthly target met!';
-}
+window.addEF=addEF;
 
 /* ══ DELETE ══ */
-function delEntry(id,type){
-  if(type==='exp') expenses=expenses.filter(e=>e.id!==id);
-  if(type==='inv') investments=investments.filter(e=>e.id!==id);
-  if(type==='ef')  emergencyFund=emergencyFund.filter(e=>e.id!==id);
-  save();renderLedger();renderDash();
-  if(type==='ef') renderEFSubPage();
-  if(type==='inv') renderInvSubPage();
-}
+window.delEntry=async(id,type)=>{
+  const colName=type==='exp'?'expenses':type==='inv'?'investments':'emergencyFund';
+  setSyncStatus('syncing');
+  await deleteDoc(doc(db,colName,id));
+  toast('Entry deleted');
+};
 
-function doClear(){
-  const lists={exp:expenses,inv:investments,ef:emergencyFund};
-  const arr=lists[ledgerType];
-  if(!arr||!arr.length)return;
-  if(ledgerType==='exp') expenses=[];
-  if(ledgerType==='inv') investments=[];
-  if(ledgerType==='ef')  emergencyFund=[];
-  save();renderLedger();renderDash();toast('Entries cleared');
-}
+/* ══ CLEAR ALL ══ */
+window.doClear=()=>toast('To delete entries, tap ✕ on each one');
 
-/* ══ LEDGER TYPE TAB ══ */
-function setLedgerType(t){
+/* ══ LEDGER TYPE ══ */
+window.setLedgerType=t=>{
   ledgerType=t;
   ['exp','inv','ef'].forEach(x=>{
     document.getElementById('ltp'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('act',ledgerType===x);
   });
   const titles={exp:'Expense entries',inv:'Investment entries',ef:'Emergency fund entries'};
   document.getElementById('ledgerTitle').textContent=titles[t];
-  buildMonthSelector();
-  renderLedger();
-}
+  buildMonthSelector();renderLedger();
+};
 
 /* ══ LEDGER TIME TAB ══ */
-function setLTab(t){
+window.setLTab=t=>{
   ledgerTab=t;
   ['all','today','week'].forEach(x=>{
     document.getElementById('lt'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('act',ledgerTab===x);
   });
   renderLedger();
-}
+};
 
 /* ══ RENDER LEDGER ══ */
 function renderLedger(){
@@ -681,15 +613,10 @@ function renderLedger(){
   const el=document.getElementById('ledgerBody');
   if(!show.length){el.innerHTML='<div class="empty"><span class="empty-icon">📭</span>No entries</div>';return;}
   el.innerHTML=show.map(e=>{
-    let dot='#888', bg='#F1EFE8', chipColor='#5F5E5A', chipBg='#F1EFE8', tag='';
-    if(ledgerType==='exp'){
-      const info=CATS[e.cat]||CATS['Other'];
-      dot=info.c;bg=info.bg;chipColor=info.t;chipBg=info.bg;tag=e.cat;
-    } else if(ledgerType==='inv'){
-      dot=INV_COLORS[e.type]||'#888';chipBg='#E1F5EE';chipColor='#085041';tag=e.type;
-    } else {
-      dot='#378ADD';chipBg='#E6F1FB';chipColor='#0C447C';tag='EF deposit';
-    }
+    let dot='#888',chipBg='#F1EFE8',chipColor='#5F5E5A',tag='';
+    if(ledgerType==='exp'){const i=CATS[e.cat]||CATS['Other'];dot=i.c;chipBg=i.bg;chipColor=i.t;tag=e.cat;}
+    else if(ledgerType==='inv'){dot=INV_COLORS[e.type]||'#888';chipBg='#E1F5EE';chipColor='#085041';tag=e.type;}
+    else{dot='#378ADD';chipBg='#E6F1FB';chipColor='#0C447C';tag='EF deposit';}
     return `<div class="entry-row">
       <div class="entry-dot" style="background:${dot};"></div>
       <div class="entry-info">
@@ -697,36 +624,61 @@ function renderLedger(){
         <div class="entry-meta">${fmtD(e.date)} · <span class="cat-chip" style="background:${chipBg};color:${chipColor};">${tag}</span></div>
       </div>
       <div class="entry-amt">${fmt(e.amt)}</div>
-      <button class="entry-del" onclick="delEntry(${JSON.stringify(e.id)},'${ledgerType}')" aria-label="Delete">✕</button>
+      <button class="entry-del" onclick="delEntry('${e.id}','${ledgerType}')" aria-label="Delete">✕</button>
     </div>`;
   }).join('');
 }
 
+/* ══ RENDER INV SUB ══ */
+function renderInvSubPage(){
+  const m=curM();
+  const total=investments.filter(e=>e.month===m).reduce((s,e)=>s+e.amt,0);
+  const remaining=Math.max(0,INV_TARGET-total);
+  document.getElementById('invMonthTotal').textContent=fmt(total);
+  document.getElementById('invMonthSub').textContent=`Target: ${fmt(INV_TARGET)} · ${fmt(remaining)} remaining`;
+  document.getElementById('invProgFill').style.width=pct(total,INV_TARGET)+'%';
+}
+
+/* ══ RENDER EF SUB ══ */
+function renderEFSubPage(){
+  const m=curM();
+  const allEF=emergencyFund.reduce((s,e)=>s+e.amt,0);
+  const totalBal=EF_STARTING+allEF;
+  const mEF=emergencyFund.filter(e=>e.month===m).reduce((s,e)=>s+e.amt,0);
+  const mPct=pct(mEF,EF_TARGET_MONTHLY);
+  const mRemaining=Math.max(0,EF_TARGET_MONTHLY-mEF);
+  document.getElementById('efTotalBal').textContent=fmt(totalBal);
+  document.getElementById('efBalSub').textContent=`Starting ₹3,50,000 + ${fmt(allEF)} deposits`;
+  document.getElementById('efBalFill').style.width=pct(totalBal,EF_TOTAL_TARGET)+'%';
+  document.getElementById('efMLabel').textContent=fmt(mEF)+' deposited';
+  document.getElementById('efMPct').textContent=mPct+'%';
+  document.getElementById('efMFill').style.width=mPct+'%';
+  document.getElementById('efMSub').textContent=mRemaining>0?fmt(mRemaining)+' remaining this month':'✓ Monthly target met!';
+}
+
 /* ══ RENDER DASHBOARD ══ */
 function renderDash(){
-  const m=curM(),td=today();
+  const m=curM();
   const mExp=expenses.filter(e=>e.month===m);
   const mInv=investments.filter(e=>e.month===m);
-  const mEF =emergencyFund.filter(e=>e.month===m);
+  const mEF=emergencyFund.filter(e=>e.month===m);
   const totalExp=mExp.reduce((s,e)=>s+e.amt,0);
   const totalInv=mInv.reduce((s,e)=>s+e.amt,0);
-  const totalEF =mEF.reduce((s,e)=>s+e.amt,0);
-  const allEF   =emergencyFund.reduce((s,e)=>s+e.amt,0);
-  const efBal   =EF_STARTING+allEF;
+  const totalEF=mEF.reduce((s,e)=>s+e.amt,0);
+  const allEF=emergencyFund.reduce((s,e)=>s+e.amt,0);
+  const efBal=EF_STARTING+allEF;
   const deployed=totalExp+totalInv+totalEF;
-  const savePct =Math.max(0,Math.round((INCOME-deployed)/INCOME*100));
+  const savePct=Math.max(0,Math.round((INCOME-deployed)/INCOME*100));
 
-  // KPIs
   document.getElementById('dExp').textContent=fmt(totalExp);
   document.getElementById('dExp').className='kpi-val '+(totalExp>BUDGET?'cr':'cp');
-  document.getElementById('dExpN').textContent='of '+fmt(BUDGET)+' budget · '+(totalExp>BUDGET?'OVER':'left: '+fmt(BUDGET-totalExp));
+  document.getElementById('dExpN').textContent='of '+fmt(BUDGET)+' · '+(totalExp>BUDGET?'OVER BUDGET':'left: '+fmt(BUDGET-totalExp));
   document.getElementById('dInv').textContent=fmt(totalInv);
-  document.getElementById('dInvN').textContent='of '+fmt(INV_TARGET)+' target · '+(totalInv>=INV_TARGET?'✓ met':'left: '+fmt(INV_TARGET-totalInv));
+  document.getElementById('dInvN').textContent='of '+fmt(INV_TARGET)+' · '+(totalInv>=INV_TARGET?'✓ target met':'left: '+fmt(INV_TARGET-totalInv));
   document.getElementById('dEF').textContent=fmt(totalEF);
-  document.getElementById('dEFN').textContent='of '+fmt(EF_TARGET_MONTHLY)+' target · '+(totalEF>=EF_TARGET_MONTHLY?'✓ met':'left: '+fmt(EF_TARGET_MONTHLY-totalEF));
+  document.getElementById('dEFN').textContent='of '+fmt(EF_TARGET_MONTHLY)+' · '+(totalEF>=EF_TARGET_MONTHLY?'✓ target met':'left: '+fmt(EF_TARGET_MONTHLY-totalEF));
   document.getElementById('dSav').textContent=savePct+'%';
 
-  // Buckets
   document.getElementById('bkExp').textContent=fmt(totalExp);
   document.getElementById('bkExpSub').textContent=pct(totalExp,BUDGET)+'% of budget';
   document.getElementById('bkInv').textContent=fmt(totalInv);
@@ -734,61 +686,38 @@ function renderDash(){
   document.getElementById('bkEF').textContent=fmt(totalEF);
   document.getElementById('bkEFSub').textContent=pct(totalEF,EF_TARGET_MONTHLY)+'% of target';
 
-  // Expense progress
   const ep=pct(totalExp,BUDGET);
   document.getElementById('progLabel').textContent=fmt(totalExp)+' spent';
   document.getElementById('progPct').textContent=ep+'%';
   document.getElementById('progFill').style.width=ep+'%';
   document.getElementById('progFill').style.background=ep>90?'var(--red)':ep>70?'var(--amber)':'var(--green)';
-  const expLeft=BUDGET-totalExp;
-  document.getElementById('progSub').textContent=expLeft>=0?fmt(expLeft)+' remaining':'Over budget by '+fmt(-expLeft);
+  document.getElementById('progSub').textContent=(BUDGET-totalExp)>=0?fmt(BUDGET-totalExp)+' remaining':'Over budget by '+fmt(totalExp-BUDGET);
 
-  // EF all-time
   const efp=pct(efBal,EF_TOTAL_TARGET);
   document.getElementById('efTotalLabel').textContent='Total saved: '+fmt(efBal);
   document.getElementById('efTotalPct').textContent=efp+'%';
   document.getElementById('efTotalFill').style.width=efp+'%';
   document.getElementById('efTotalSub').textContent='Target: '+fmt(EF_TOTAL_TARGET)+' · '+fmt(Math.max(0,EF_TOTAL_TARGET-efBal))+' to go';
 
-  // Expense category bars
   const ct={};
   mExp.forEach(e=>{ct[e.cat]=(ct[e.cat]||0)+e.amt;});
-  const barsEl=document.getElementById('dashBars');
   const active=Object.entries(ct).sort((a,b)=>b[1]-a[1]);
+  const barsEl=document.getElementById('dashBars');
   if(!active.length){barsEl.innerHTML='<div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No expenses logged yet</div>';}
-  else{
-    barsEl.innerHTML=active.map(([cat,spent])=>{
-      const info=CATS[cat]||CATS['Other'];
-      const budget=info.b;
-      const p=budget>0?pct(spent,budget):100;
-      const over=budget>0&&spent>budget;
-      return `<div class="bar-row">
-        <div class="bar-label">${cat}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${over?'var(--red)':info.c};"></div></div>
-        <div class="bar-val" style="color:${over?'var(--red)':'var(--text-faint)'};">${fmt(spent)}${budget?' / '+fmt(budget):''}</div>
-      </div>`;
-    }).join('');
-  }
+  else{barsEl.innerHTML=active.map(([cat,spent])=>{
+    const info=CATS[cat]||CATS['Other'];
+    const p=info.b>0?pct(spent,info.b):100;
+    const over=info.b>0&&spent>info.b;
+    return `<div class="bar-row"><div class="bar-label">${cat}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${over?'var(--red)':info.c};"></div></div><div class="bar-val" style="color:${over?'var(--red)':'var(--text-faint)'};">${fmt(spent)}${info.b?' / '+fmt(info.b):''}</div></div>`;
+  }).join('');}
 
-  // Investment bars by type
   const it={};
   mInv.forEach(e=>{it[e.type]=(it[e.type]||0)+e.amt;});
-  const invBarsEl=document.getElementById('invBars');
   const invActive=Object.entries(it).sort((a,b)=>b[1]-a[1]);
+  const invBarsEl=document.getElementById('invBars');
   if(!invActive.length){invBarsEl.innerHTML='<div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No investments logged yet</div>';}
-  else{
-    invBarsEl.innerHTML=invActive.map(([type,amt])=>{
-      const col=INV_COLORS[type]||'#888';
-      const p=pct(amt,INV_TARGET);
-      return `<div class="bar-row">
-        <div class="bar-label">${type}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${col};"></div></div>
-        <div class="bar-val">${fmt(amt)}</div>
-      </div>`;
-    }).join('');
-  }
+  else{invBarsEl.innerHTML=invActive.map(([type,amt])=>`<div class="bar-row"><div class="bar-label">${type}</div><div class="bar-track"><div class="bar-fill" style="width:${pct(amt,INV_TARGET)}%;background:${INV_COLORS[type]||'#888'};"></div></div><div class="bar-val">${fmt(amt)}</div></div>`).join('');}
 
-  // Donut (expenses)
   const canvas=document.getElementById('donut');
   const ctx=canvas.getContext('2d');
   const legendEl=document.getElementById('donutLegend');
@@ -804,18 +733,13 @@ function renderDash(){
   active.forEach(([cat,amt])=>{
     const info=CATS[cat]||CATS['Other'];
     const slice=(amt/totalExp)*Math.PI*2;
-    ctx.beginPath();ctx.moveTo(60,60);
-    ctx.arc(60,60,50,sa,sa+slice);
-    ctx.closePath();ctx.fillStyle=info.c;ctx.fill();
+    ctx.beginPath();ctx.moveTo(60,60);ctx.arc(60,60,50,sa,sa+slice);ctx.closePath();ctx.fillStyle=info.c;ctx.fill();
     sa+=slice;
   });
-  ctx.beginPath();ctx.arc(60,60,32,0,Math.PI*2);
-  ctx.fillStyle='#f5f5f4';ctx.fill();
-  ctx.fillStyle='#1a1a1a';ctx.font='bold 11px -apple-system,sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.beginPath();ctx.arc(60,60,32,0,Math.PI*2);ctx.fillStyle='#f5f5f4';ctx.fill();
+  ctx.fillStyle='#1a1a1a';ctx.font='bold 11px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(fmt(totalExp),60,58);
-  ctx.fillStyle='#a0a0a0';ctx.font='9px -apple-system,sans-serif';
-  ctx.fillText('expenses',60,72);
+  ctx.fillStyle='#a0a0a0';ctx.font='9px -apple-system,sans-serif';ctx.fillText('expenses',60,72);
   legendEl.innerHTML=active.slice(0,6).map(([cat,amt])=>{
     const info=CATS[cat]||CATS['Other'];
     return `<div class="leg-row"><div class="leg-dot" style="background:${info.c};"></div><div class="leg-name">${cat}</div><div class="leg-amt">${fmt(amt)}</div><div class="leg-pct">${Math.round(amt/totalExp*100)}%</div></div>`;
@@ -824,12 +748,8 @@ function renderDash(){
 
 /* ══ MONTH SELECTOR ══ */
 function buildMonthSelector(){
-  const allEntries=[
-    ...expenses.map(e=>e.month),
-    ...investments.map(e=>e.month),
-    ...emergencyFund.map(e=>e.month)
-  ];
-  const months=[...new Set(allEntries)].sort().reverse();
+  const allMonths=[...expenses,...investments,...emergencyFund].map(e=>e.month);
+  const months=[...new Set(allMonths)].sort().reverse();
   const cur=curM();
   if(!months.includes(cur)) months.unshift(cur);
   const sel=document.getElementById('csvMonth');
@@ -840,51 +760,43 @@ function buildMonthSelector(){
   }).join('');
 }
 
-/* ══ CSV DOWNLOAD ══ */
-function downloadCSV(){
+/* ══ CSV ══ */
+window.downloadCSV=()=>{
   const month=document.getElementById('csvMonth').value;
   const [y,mo]=month.split('-');
-  const monthLabel=new Date(y,mo-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  const label=new Date(y,mo-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
   const mExp=expenses.filter(e=>e.month===month);
   const mInv=investments.filter(e=>e.month===month);
-  const mEF =emergencyFund.filter(e=>e.month===month);
-  const lines=[];
-  lines.push(`BuBu Chui Enterprises — ${monthLabel}`);
-  lines.push('');
-  lines.push('EXPENSES');
-  lines.push('Date,Description,Category,Amount');
+  const mEF=emergencyFund.filter(e=>e.month===month);
+  const lines=[`BuBu Chui Enterprises — ${label}`,'','EXPENSES','Date,Description,Category,Amount'];
   mExp.forEach(e=>lines.push(`${e.date},"${e.desc}","${e.cat}",${e.amt}`));
-  lines.push(`,,Total,${mExp.reduce((s,e)=>s+e.amt,0)}`);
-  lines.push('');
-  lines.push('INVESTMENTS');
-  lines.push('Date,Description,Type,Amount');
+  lines.push(`,,Total,${mExp.reduce((s,e)=>s+e.amt,0)}`,'','INVESTMENTS','Date,Description,Type,Amount');
   mInv.forEach(e=>lines.push(`${e.date},"${e.desc}","${e.type}",${e.amt}`));
-  lines.push(`,,Total,${mInv.reduce((s,e)=>s+e.amt,0)}`);
-  lines.push('');
-  lines.push('EMERGENCY FUND DEPOSITS');
-  lines.push('Date,Description,Amount');
+  lines.push(`,,Total,${mInv.reduce((s,e)=>s+e.amt,0)}`,'','EMERGENCY FUND','Date,Description,Amount');
   mEF.forEach(e=>lines.push(`${e.date},"${e.desc}",${e.amt}`));
-  lines.push(`,Total,${mEF.reduce((s,e)=>s+e.amt,0)}`);
-  lines.push('');
-  lines.push('SUMMARY');
-  lines.push(`Income,${INCOME}`);
-  lines.push(`Expenses,${mExp.reduce((s,e)=>s+e.amt,0)},Budget,${BUDGET}`);
-  lines.push(`Investments,${mInv.reduce((s,e)=>s+e.amt,0)},Target,${INV_TARGET}`);
-  lines.push(`Emergency Fund,${mEF.reduce((s,e)=>s+e.amt,0)},Target,${EF_TARGET_MONTHLY}`);
-  const csv=lines.join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  lines.push(`,Total,${mEF.reduce((s,e)=>s+e.amt,0)}`,'','SUMMARY',`Income,${INCOME}`,`Expenses,${mExp.reduce((s,e)=>s+e.amt,0)},Budget,${BUDGET}`,`Investments,${mInv.reduce((s,e)=>s+e.amt,0)},Target,${INV_TARGET}`,`Emergency Fund,${mEF.reduce((s,e)=>s+e.amt,0)},Target,${EF_TARGET_MONTHLY}`);
+  const blob=new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
   const link=document.createElement('a');
   link.href=url;link.download=`BCE_${month}.csv`;
   document.body.appendChild(link);link.click();
   document.body.removeChild(link);URL.revokeObjectURL(url);
   toast('Downloaded: BCE_'+month+'.csv');
-}
+};
 
 /* ══ INIT ══ */
 document.getElementById('monthChip').textContent=new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'});
-['expDate','invDate','efDate'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=today(); });
-load();buildExpPills();buildInvTypePills();buildMonthSelector();renderDash();renderEFSubPage();renderInvSubPage();
+['expDate','invDate','efDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today();});
+buildExpPills();buildInvTypePills();
+
+// Start Firebase listeners
+startListeners();
+
+// Hide loading screen after first data arrives
+setTimeout(()=>{
+  document.getElementById('loadingScreen').classList.add('hide');
+  setTimeout(()=>document.getElementById('loadingScreen').remove(),600);
+},2500);
 </script>
 </body>
 </html>
