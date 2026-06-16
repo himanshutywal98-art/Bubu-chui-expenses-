@@ -462,7 +462,7 @@ async function addExpense(){
   btn.disabled=true;btn.textContent='...';
   const cat=selExpCat||await aiCat(desc);
   expenses.unshift({id:Date.now(),desc,amt,cat,date,month:date.substring(0,7),createdAt:Date.now()});
-  save();
+  save();renderDash();renderLedger();
   document.getElementById('expDesc').value='';
   document.getElementById('expAmt').value='';
   document.getElementById('expDate').value=today();
@@ -492,7 +492,7 @@ async function addInvestment(){
   const btn=document.getElementById('invBtn');
   btn.disabled=true;btn.textContent='...';
   investments.unshift({id:Date.now(),desc,amt,type,date,month:date.substring(0,7),createdAt:Date.now()});
-  save();
+  save();renderDash();renderLedger();renderInvSubPage();
   document.getElementById('invDesc').value='';
   document.getElementById('invAmt').value='';
   document.getElementById('invDate').value=today();
@@ -521,7 +521,7 @@ async function addEF(){
   const btn=document.getElementById('efBtn');
   btn.disabled=true;btn.textContent='...';
   emergencyFund.unshift({id:Date.now(),desc,amt,date,month:date.substring(0,7),createdAt:Date.now()});
-  save();
+  save();renderDash();renderLedger();renderEFSubPage();
   document.getElementById('efDesc').value='';
   document.getElementById('efAmt').value='';
   document.getElementById('efDate').value=today();
