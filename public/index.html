@@ -36,10 +36,7 @@
     .hdr-logo{width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
     .hdr-title{font-size:16px;font-weight:600;color:#fff;}
     .hdr-sub{font-size:11px;color:rgba(255,255,255,.7);}
-    .sync-chip{font-size:11px;border-radius:20px;padding:3px 10px;}
-    .sync-chip.online{background:rgba(255,255,255,.2);color:#fff;}
-    .sync-chip.offline{background:rgba(255,100,100,.3);color:#fff;}
-    .sync-chip.syncing{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);}
+
     .page{display:none;padding-bottom:calc(var(--safe-bottom) + 70px);}
     .page.act{display:block;}
     .page-tabs{display:flex;background:var(--white);border-bottom:.5px solid var(--border);position:sticky;top:56px;z-index:50;}
@@ -159,7 +156,7 @@
       <div class="hdr-sub">BuBu Chui Enterprises</div>
     </div>
   </div>
-  <div class="sync-chip online" id="syncChip">● Live</div>
+  <div class="month-chip" id="monthChip2"></div>
 </div>
 
 <!-- DASHBOARD -->
@@ -339,22 +336,8 @@
 <div class="toast" id="toast"></div>
 
 <!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-/* ══ FIREBASE CONFIG ══ */
-const firebaseConfig = {
-  apiKey: "AIzaSyCA_DBE1thwJre-kF5yr6UddpkSNcrRKyk",
-  authDomain: "bce-expenses.firebaseapp.com",
-  projectId: "bce-expenses",
-  storageBucket: "bce-expenses.firebasestorage.app",
-  messagingSenderId: "436760257099",
-  appId: "1:436760257099:web:187b2b6766aa43395763ce"
-};
-
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+<script>
+/* ══ LOCAL STORAGE MODE ══ */
 
 /* ══ CONSTANTS ══ */
 const BUDGET=161000, INV_TARGET=100000, EF_TARGET_MONTHLY=61000;
@@ -377,6 +360,20 @@ const INV_COLORS={'Mutual Fund':'#1D9E75','SIP':'#378ADD','PPF':'#534AB7','NPS':
 
 /* ══ STATE ══ */
 let expenses=[], investments=[], emergencyFund=[];
+
+/* ══ STORAGE ══ */
+function save(){
+  try{
+    localStorage.setItem('bce_exp', JSON.stringify(expenses));
+    localStorage.setItem('bce_inv', JSON.stringify(investments));
+    localStorage.setItem('bce_ef',  JSON.stringify(emergencyFund));
+  }catch(e){}
+}
+function load(){
+  try{ expenses      = JSON.parse(localStorage.getItem('bce_exp')||'[]'); }catch(e){ expenses=[]; }
+  try{ investments   = JSON.parse(localStorage.getItem('bce_inv')||'[]'); }catch(e){ investments=[]; }
+  try{ emergencyFund = JSON.parse(localStorage.getItem('bce_ef') ||'[]'); }catch(e){ emergencyFund=[]; }
+}
 let selExpCat=null, selInvType=null;
 let ledgerType='exp', ledgerTab='all';
 
@@ -394,42 +391,9 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-/* ══ SYNC STATUS ══ */
-function setSyncStatus(status){
-  const chip=document.getElementById('syncChip');
-  if(status==='online'){chip.textContent='● Live';chip.className='sync-chip online';}
-  else if(status==='syncing'){chip.textContent='↻ Syncing';chip.className='sync-chip syncing';}
-  else{chip.textContent='○ Offline';chip.className='sync-chip offline';}
-}
+function setSyncStatus(s){} // localStorage mode
 
-/* ══ REAL-TIME LISTENERS ══ */
-function startListeners(){
-  setSyncStatus('syncing');
-  // Expenses
-  onSnapshot(collection(db,'expenses'), snap=>{
-    expenses=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
-    renderDash();renderLedger();renderEFSubPage();renderInvSubPage();
-    setSyncStatus('online');
-  }, err=>{ console.error('expenses:',err); setSyncStatus('offline'); });
-
-  // Investments
-  onSnapshot(collection(db,'investments'), snap=>{
-    investments=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
-    renderDash();renderLedger();renderInvSubPage();
-  }, err=>console.error('investments:',err));
-
-  // Emergency Fund
-  onSnapshot(collection(db,'emergencyFund'), snap=>{
-    emergencyFund=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.createdAt-a.createdAt);
-    renderDash();renderLedger();renderEFSubPage();
-  }, err=>console.error('ef:',err));
-
-  // If no response in 8 seconds, show offline but keep app usable
-  setTimeout(()=>{
-    const chip=document.getElementById('syncChip');
-    if(chip && chip.classList.contains('syncing')) setSyncStatus('offline');
-  }, 8000);
-}
+function startListeners(){} // localStorage mode
 
 /* ══ NAVIGATION ══ */
 function goPage(p){
@@ -496,23 +460,23 @@ async function addExpense(){
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('expBtn');
   btn.disabled=true;btn.textContent='...';
-  setSyncStatus('syncing');
   const cat=selExpCat||await aiCat(desc);
-  await addDoc(collection(db,'expenses'),{desc,amt,cat,date,month:date.substring(0,7),createdAt:Date.now()});
+  expenses.unshift({id:Date.now(),desc,amt,cat,date,month:date.substring(0,7),createdAt:Date.now()});
+  save();
   document.getElementById('expDesc').value='';
   document.getElementById('expAmt').value='';
   document.getElementById('expDate').value=today();
   selExpCat=null;buildExpPills();
   btn.disabled=false;btn.textContent='Add';
   setTimeout(()=>{h.textContent='Select a category or let AI pick it';h.className='log-hint';},2500);
-  toast('✓ Expense saved — synced to both phones');
+  toast('✓ Expense logged');
 }
 window.addExpense=addExpense;
 
 /* ══ QUICK EXPENSE ══ */
-window.quickExp=async(desc,cat,amt)=>{
-  setSyncStatus('syncing');
-  await addDoc(collection(db,'expenses'),{desc,amt,cat,date:today(),month:curM(),createdAt:Date.now()});
+window.quickExp=(desc,cat,amt)=>{
+  expenses.unshift({id:Date.now(),desc,amt,cat,date:today(),month:curM(),createdAt:Date.now()});
+  save();renderDash();
   toast('✓ '+desc+' added');
 };
 
@@ -527,14 +491,14 @@ async function addInvestment(){
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('invBtn');
   btn.disabled=true;btn.textContent='...';
-  setSyncStatus('syncing');
-  await addDoc(collection(db,'investments'),{desc,amt,type,date,month:date.substring(0,7),createdAt:Date.now()});
+  investments.unshift({id:Date.now(),desc,amt,type,date,month:date.substring(0,7),createdAt:Date.now()});
+  save();
   document.getElementById('invDesc').value='';
   document.getElementById('invAmt').value='';
   document.getElementById('invDate').value=today();
   selInvType=null;buildInvTypePills();
   btn.disabled=false;btn.textContent='Add';
-  h.textContent='✓ Investment synced to both phones';h.className='log-hint ok';
+  h.textContent='✓ Investment logged';h.className='log-hint ok';
   setTimeout(()=>{h.textContent='Log each SIP, MF, PPF, gold bond separately';h.className='log-hint';},2500);
   toast('✓ Investment saved');
 }
@@ -556,28 +520,37 @@ async function addEF(){
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('efBtn');
   btn.disabled=true;btn.textContent='...';
-  setSyncStatus('syncing');
-  await addDoc(collection(db,'emergencyFund'),{desc,amt,date,month:date.substring(0,7),createdAt:Date.now()});
+  emergencyFund.unshift({id:Date.now(),desc,amt,date,month:date.substring(0,7),createdAt:Date.now()});
+  save();
   document.getElementById('efDesc').value='';
   document.getElementById('efAmt').value='';
   document.getElementById('efDate').value=today();
   btn.disabled=false;btn.textContent='Add';
-  h.textContent='✓ Deposit synced to both phones';h.className='log-hint ok';
+  h.textContent='✓ Deposit logged';h.className='log-hint ok';
   setTimeout(()=>{h.textContent="This month's target: ₹61,000";h.className='log-hint';},2500);
   toast('✓ EF deposit saved — '+fmt(amt));
 }
 window.addEF=addEF;
 
 /* ══ DELETE ══ */
-window.delEntry=async(id,type)=>{
-  const colName=type==='exp'?'expenses':type==='inv'?'investments':'emergencyFund';
-  setSyncStatus('syncing');
-  await deleteDoc(doc(db,colName,id));
+window.delEntry=(id,type)=>{
+  const numId=typeof id==='string'?id:id;
+  if(type==='exp') expenses=expenses.filter(e=>String(e.id)!==String(numId));
+  if(type==='inv') investments=investments.filter(e=>String(e.id)!==String(numId));
+  if(type==='ef')  emergencyFund=emergencyFund.filter(e=>String(e.id)!==String(numId));
+  save();renderLedger();renderDash();
+  if(type==='ef') renderEFSubPage();
+  if(type==='inv') renderInvSubPage();
   toast('Entry deleted');
 };
 
 /* ══ CLEAR ALL ══ */
-window.doClear=()=>toast('To delete entries, tap ✕ on each one');
+window.doClear=()=>{
+  if(ledgerType==='exp') expenses=[];
+  if(ledgerType==='inv') investments=[];
+  if(ledgerType==='ef')  emergencyFund=[];
+  save();renderLedger();renderDash();toast('Entries cleared');
+};
 
 /* ══ LEDGER TYPE ══ */
 window.setLedgerType=t=>{
@@ -787,8 +760,8 @@ document.getElementById('monthChip').textContent=new Date().toLocaleDateString('
 ['expDate','invDate','efDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today();});
 buildExpPills();buildInvTypePills();
 
-// Start Firebase in background
-try{ startListeners(); }catch(e){ setSyncStatus('offline'); }
+// Load from localStorage
+load();renderDash();renderEFSubPage();renderInvSubPage();buildMonthSelector();
 </script>
 </body>
 </html>
