@@ -1,327 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <meta name="theme-color" content="#1D9E75"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="BCE Tracker"/>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-  <title>BCE Tracker</title>
-  <style>
-    :root {
-      --green:#1D9E75; --green-light:#E1F5EE; --green-dark:#085041;
-      --purple:#534AB7; --purple-light:#EEEDFE;
-      --blue:#378ADD; --blue-light:#E6F1FB;
-      --red:#E24B4A; --amber:#BA7517;
-      --pink:#D4537E; --gray:#888780; --gray-light:#F1EFE8;
-      --olive:#639922; --olive-light:#EAF3DE;
-      --orange:#D85A30; --orange-light:#FAECE7;
-      --teal:#7F77DD; --teal-light:#EEEDFE;
-      --text:#1a1a1a; --text-muted:#6b6b6b; --text-faint:#a0a0a0;
-      --border:rgba(0,0,0,0.08); --surface:#f5f5f4; --white:#fff;
-      --safe-top:env(safe-area-inset-top,0px);
-      --safe-bottom:env(safe-area-inset-bottom,0px);
-    }
-    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;background:var(--surface);color:var(--text);min-height:100vh;overscroll-behavior:none;}
-    .nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:.5px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);z-index:200;}
-    .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;border:none;background:none;font-family:inherit;cursor:pointer;color:var(--text-faint);font-size:10px;}
-    .nav-btn.act{color:var(--green);}
-    .nav-icon{font-size:22px;line-height:1;}
-    .app-hdr{background:var(--green);padding:calc(var(--safe-top) + 14px) 16px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-    .hdr-l{display:flex;align-items:center;gap:10px;}
-    .hdr-logo{width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
-    .hdr-title{font-size:16px;font-weight:600;color:#fff;}
-    .hdr-sub{font-size:11px;color:rgba(255,255,255,.7);}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#0A0A0F"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="BCE"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<title>BCE</title>
+<style>
+:root {
+  --bg: #0A0A0F;
+  --bg2: #12121A;
+  --bg3: #1A1A26;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #F0F0F8;
+  --text2: rgba(240,240,248,0.6);
+  --text3: rgba(240,240,248,0.35);
+  --accent: #7C6EF5;
+  --accent2: #9D93F7;
+  --accent-glow: rgba(124,110,245,0.3);
+  --green: #34D399;
+  --green-dim: rgba(52,211,153,0.15);
+  --blue: #60A5FA;
+  --blue-dim: rgba(96,165,250,0.15);
+  --red: #F87171;
+  --red-dim: rgba(248,113,113,0.15);
+  --amber: #FBBF24;
+  --amber-dim: rgba(251,191,36,0.15);
+  --pink: #F472B6;
+  --pink-dim: rgba(244,114,182,0.15);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
 
-    .page{display:none;padding-bottom:calc(var(--safe-bottom) + 70px);}
-    .page.act{display:block;}
-    .page-tabs{display:flex;background:var(--white);border-bottom:.5px solid var(--border);position:sticky;top:56px;z-index:50;}
-    .ptab{flex:1;font-size:13px;font-weight:500;padding:12px 4px;text-align:center;color:var(--text-muted);border:none;background:none;font-family:inherit;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-.5px;}
-    .ptab.act{color:var(--green);border-bottom-color:var(--green);}
-    .sub-page{display:none;} .sub-page.act{display:block;}
-    .card{background:var(--white);border-radius:14px;border:.5px solid var(--border);overflow:hidden;margin:0 14px;}
-    .card+.card{margin-top:10px;}
-    .sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 14px 8px;}
-    .sec-title{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
-    .sec-act{font-size:12px;color:var(--green);background:none;border:none;font-family:inherit;cursor:pointer;}
-    .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px 14px 0;}
-    .kpi{background:var(--white);border-radius:12px;padding:12px 14px;border:.5px solid var(--border);}
-    .kpi-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;}
-    .kpi-val{font-size:20px;font-weight:600;}
-    .kpi-note{font-size:11px;color:var(--text-faint);margin-top:2px;}
-    .cg{color:var(--green);} .cr{color:var(--red);} .ca{color:var(--amber);} .cp{color:var(--purple);} .cb{color:var(--blue);}
-    .buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 14px 0;}
-    .bucket{background:var(--white);border-radius:10px;padding:10px 6px;border:.5px solid var(--border);text-align:center;}
-    .bucket-icon{font-size:16px;margin-bottom:3px;}
-    .bucket-amt{font-size:12px;font-weight:600;}
-    .bucket-sub{font-size:10px;color:var(--text-faint);margin-top:1px;}
-    .bucket-label{font-size:10px;color:var(--text-muted);margin-top:2px;}
-    .prog-card{background:var(--white);border-radius:12px;padding:14px;border:.5px solid var(--border);margin:0 14px;}
-    .prog-header{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px;}
-    .prog-track{height:8px;background:var(--surface);border-radius:4px;overflow:hidden;}
-    .prog-fill{height:100%;border-radius:4px;transition:width .4s;}
-    .prog-sub{font-size:11px;color:var(--text-faint);margin-top:5px;}
-    .bars-wrap{padding:14px;display:flex;flex-direction:column;gap:10px;}
-    .bar-row{display:flex;align-items:center;gap:10px;}
-    .bar-label{font-size:12px;color:var(--text-muted);width:110px;flex-shrink:0;}
-    .bar-track{flex:1;height:7px;background:var(--surface);border-radius:4px;overflow:hidden;}
-    .bar-fill{height:100%;border-radius:4px;transition:width .4s;}
-    .bar-val{font-size:11px;width:75px;text-align:right;flex-shrink:0;color:var(--text-faint);}
-    .donut-wrap{padding:14px;display:flex;align-items:center;gap:16px;}
-    .donut-legend{flex:1;display:flex;flex-direction:column;gap:7px;}
-    .leg-row{display:flex;align-items:center;gap:7px;font-size:12px;}
-    .leg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-    .leg-name{flex:1;color:var(--text-muted);}
-    .leg-amt{font-weight:500;color:var(--text);}
-    .leg-pct{font-size:11px;color:var(--text-faint);min-width:30px;text-align:right;}
-    .log-wrap{padding:14px;}
-    .log-input{width:100%;font-size:15px;padding:13px 14px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;margin-bottom:8px;}
-    .log-input:focus{border-color:var(--green);background:var(--white);}
-    .log-row{display:flex;gap:8px;margin-bottom:8px;}
-    .log-amt{flex:1;font-size:17px;font-weight:600;padding:12px 14px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;}
-    .log-amt:focus{border-color:var(--green);background:var(--white);}
-    .log-btn{background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;}
-    .log-btn:active{background:var(--green-dark);}
-    .log-btn:disabled{opacity:.5;}
-    .log-hint{font-size:12px;color:var(--text-faint);min-height:18px;padding:2px 0;}
-    .log-hint.ok{color:var(--green);} .log-hint.err{color:var(--red);}
-    .date-input{width:100%;font-size:13px;padding:11px 12px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;margin-bottom:8px;}
-    .date-input:focus{border-color:var(--green);background:var(--white);}
-    .pills-scroll{display:flex;gap:6px;overflow-x:auto;padding:0 14px;scrollbar-width:none;margin-bottom:10px;}
-    .pills-scroll::-webkit-scrollbar{display:none;}
-    .pill{flex-shrink:0;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;}
-    .pill.sel{background:var(--green-light);border-color:var(--green);color:var(--green-dark);font-weight:500;}
-    .quick-grid{display:grid;grid-template-columns:repeat(2,1fr);}
-    .quick-btn{padding:14px;border:none;background:none;font-family:inherit;cursor:pointer;text-align:left;border-right:.5px solid var(--border);border-bottom:.5px solid var(--border);}
-    .quick-btn:nth-child(even){border-right:none;}
-    .quick-btn:nth-last-child(-n+2){border-bottom:none;}
-    .quick-btn:active{background:var(--surface);}
-    .quick-icon{font-size:18px;}
-    .quick-name{font-size:13px;font-weight:500;margin-top:4px;}
-    .quick-amt{font-size:11px;color:var(--text-faint);}
-    .inv-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;}
-    .inv-type{font-size:11px;padding:7px 4px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;text-align:center;font-family:inherit;}
-    .inv-type.sel{background:var(--blue-light);border-color:var(--blue);color:#0C447C;font-weight:500;}
-    .ef-balance-card{background:linear-gradient(135deg,var(--blue) 0%,#185FA5 100%);border-radius:14px;margin:14px 14px 0;padding:18px;}
-    .ef-bal-label{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:4px;}
-    .ef-bal-val{font-size:28px;font-weight:700;color:#fff;}
-    .ef-bal-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:4px;}
-    .ef-target-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;}
-    .ef-target-label{font-size:11px;color:rgba(255,255,255,.7);}
-    .ef-target-val{font-size:13px;font-weight:600;color:#fff;}
-    .ef-prog-track{height:6px;background:rgba(255,255,255,.25);border-radius:3px;margin-top:8px;overflow:hidden;}
-    .ef-prog-fill{height:100%;background:#fff;border-radius:3px;transition:width .4s;}
-    .inv-target-card{background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);border-radius:14px;margin:14px 14px 0;padding:18px;}
-    .inv-target-label{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:4px;}
-    .inv-target-val{font-size:28px;font-weight:700;color:#fff;}
-    .inv-target-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:4px;}
-    .ledger-tabs{display:flex;border-bottom:.5px solid var(--border);}
-    .ltab{flex:1;font-size:12px;padding:10px 4px;text-align:center;color:var(--text-muted);cursor:pointer;border:none;background:none;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-.5px;}
-    .ltab.act{color:var(--green);font-weight:600;border-bottom-color:var(--green);}
-    .entry-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:.5px solid var(--border);}
-    .entry-row:last-child{border-bottom:none;}
-    .entry-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-    .entry-info{flex:1;min-width:0;}
-    .entry-desc{font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .entry-meta{font-size:11px;color:var(--text-faint);margin-top:2px;}
-    .cat-chip{font-size:10px;padding:1px 7px;border-radius:10px;display:inline-block;}
-    .entry-amt{font-size:14px;font-weight:600;color:var(--text);flex-shrink:0;min-width:65px;text-align:right;}
-    .entry-del{background:none;border:none;color:var(--text-faint);font-size:16px;padding:4px;cursor:pointer;flex-shrink:0;}
-    .entry-del:active{color:var(--red);}
-    .empty{padding:36px 16px;text-align:center;color:var(--text-faint);font-size:14px;}
-    .empty-icon{font-size:36px;display:block;margin-bottom:10px;}
-    .csv-row{display:flex;gap:8px;align-items:center;padding:0 14px 12px;}
-    .csv-select{flex:1;font-size:13px;padding:9px 12px;border:.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;}
-    .csv-btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;border:none;background:var(--green);color:#fff;font-family:inherit;cursor:pointer;white-space:nowrap;}
-    .toast{position:fixed;bottom:calc(var(--safe-bottom) + 72px);left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999;}
-    .toast.show{opacity:1;}
-    .info-banner{margin:10px 14px 0;background:var(--green-light);border:.5px solid #9FE1CB;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--green-dark);line-height:1.5;}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  </style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── BOTTOM NAV ── */
+.nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: .5px solid var(--border);
+  display: flex;
+  padding-bottom: var(--safe-bottom);
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 4px; padding: 12px 0 10px; border: none; background: none;
+  font-family: inherit; cursor: pointer; color: var(--text3);
+  font-size: 10px; letter-spacing: 0.02em; transition: color 0.2s;
+  position: relative;
+}
+.nav-btn.act { color: var(--accent2); }
+.nav-btn.act::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 32px; height: 2px; background: var(--accent); border-radius: 0 0 2px 2px;
+}
+.nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
+.nav-btn.act .nav-icon { transform: scale(1.1); }
+
+/* ── HEADER ── */
+.app-hdr {
+  padding: calc(var(--safe-top) + 16px) 20px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.hdr-logo-wrap { display: flex; align-items: center; gap: 10px; }
+.hdr-logo {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--accent), #5B4FD9);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; box-shadow: 0 4px 15px var(--accent-glow);
+}
+.hdr-title { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.hdr-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.month-badge {
+  font-size: 11px; font-weight: 500;
+  background: var(--surface2); color: var(--text2);
+  border: .5px solid var(--border2); border-radius: 20px;
+  padding: 5px 12px;
+}
+
+/* ── PAGES ── */
+.page { display: none; padding-bottom: calc(var(--safe-bottom) + 80px); animation: fadeUp 0.3s ease; }
+.page.act { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── PAGE TABS ── */
+.page-tabs {
+  display: flex; padding: 0 20px; gap: 4px;
+  background: rgba(10,10,15,0.8); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: sticky; top: 66px; z-index: 50;
+  padding-top: 8px; padding-bottom: 12px;
+}
+.ptab {
+  flex: 1; font-size: 12px; font-weight: 600; padding: 8px 6px;
+  text-align: center; color: var(--text3); border: none; background: var(--surface);
+  font-family: inherit; cursor: pointer; border-radius: var(--radius-sm);
+  transition: all 0.2s; letter-spacing: 0.01em;
+}
+.ptab.act { background: var(--accent); color: #fff; box-shadow: 0 4px 12px var(--accent-glow); }
+
+.sub-page { display: none; } .sub-page.act { display: block; }
+
+/* ── HERO CARD ── */
+.hero-card {
+  margin: 16px 16px 0;
+  background: linear-gradient(135deg, #1E1A3C 0%, #0F0F1E 60%, #1A1020 100%);
+  border-radius: var(--radius-lg); padding: 24px;
+  border: .5px solid rgba(124,110,245,0.2);
+  position: relative; overflow: hidden;
+}
+.hero-card::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(124,110,245,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-card::after {
+  content: ''; position: absolute; bottom: -20px; left: 20px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(52,211,153,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label { font-size: 12px; color: rgba(240,240,248,0.5); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.hero-amount { font-size: 42px; font-weight: 800; color: #fff; letter-spacing: -1.5px; line-height: 1.1; margin: 6px 0 4px; }
+.hero-sub { font-size: 13px; color: rgba(240,240,248,0.5); }
+.hero-progress-wrap { margin-top: 18px; }
+.hero-progress-labels { display: flex; justify-content: space-between; font-size: 11px; color: rgba(240,240,248,0.4); margin-bottom: 6px; }
+.hero-track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+.hero-fill { height: 100%; border-radius: 2px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+.hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 18px; padding-top: 18px; border-top: .5px solid rgba(255,255,255,0.08); }
+.hero-stat-val { font-size: 16px; font-weight: 700; color: #fff; }
+.hero-stat-label { font-size: 10px; color: rgba(240,240,248,0.4); margin-top: 2px; letter-spacing: 0.03em; }
+
+/* ── SECTION ── */
+.sec { padding: 20px 16px 0; }
+.sec-title { font-size: 13px; font-weight: 600; color: var(--text2); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
+
+/* ── GLASS CARD ── */
+.glass-card {
+  background: var(--surface); border: .5px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+/* ── BUCKET STRIP ── */
+.bucket-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.bucket-card {
+  background: var(--surface); border: .5px solid var(--border);
+  border-radius: var(--radius); padding: 14px 10px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.bucket-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.bucket-card.exp::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+.bucket-card.inv::before { background: linear-gradient(90deg, var(--green), #10B981); }
+.bucket-card.ef::before  { background: linear-gradient(90deg, var(--blue), #3B82F6); }
+.bucket-icon { font-size: 20px; margin-bottom: 6px; }
+.bucket-amt { font-size: 14px; font-weight: 700; }
+.bucket-pct { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.bucket-name { font-size: 10px; color: var(--text2); margin-top: 4px; font-weight: 500; }
+
+/* ── MINI PROGRESS ── */
+.mini-prog-card { padding: 16px; }
+.mini-prog-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.mini-prog-row:last-child { margin-bottom: 0; }
+.mini-prog-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.mini-prog-info { flex: 1; min-width: 0; }
+.mini-prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.mini-prog-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.mini-prog-vals { font-size: 11px; color: var(--text3); }
+.mini-track { height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+.mini-fill { height: 100%; border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── CAT BARS ── */
+.cat-bars-wrap { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.cat-bar-row { display: flex; align-items: center; gap: 10px; }
+.cat-bar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.cat-bar-label { font-size: 12px; color: var(--text2); width: 100px; flex-shrink: 0; }
+.cat-bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+.cat-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+.cat-bar-amt { font-size: 11px; color: var(--text3); min-width: 55px; text-align: right; flex-shrink: 0; }
+
+/* ── DONUT ── */
+.donut-wrap { padding: 20px 16px; display: flex; align-items: center; gap: 16px; }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.leg-row { display: flex; align-items: center; gap: 8px; }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.leg-name { flex: 1; font-size: 12px; color: var(--text2); }
+.leg-amt { font-size: 12px; font-weight: 600; color: var(--text); }
+.leg-pct { font-size: 11px; color: var(--text3); min-width: 28px; text-align: right; }
+
+/* ── LOG FORM ── */
+.log-section { padding: 16px; }
+.input-group { margin-bottom: 10px; }
+.input-label { font-size: 11px; font-weight: 600; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+.log-input {
+  width: 100%; font-size: 15px; padding: 14px 16px;
+  border: .5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text); font-family: inherit; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none;
+}
+.log-input::placeholder { color: var(--text3); }
+.log-input:focus { border-color: var(--accent); background: rgba(124,110,245,0.06); }
+.log-input.amt-input { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+.log-btn {
+  width: 100%; background: linear-gradient(135deg, var(--accent), #5B4FD9);
+  color: #fff; border: none; border-radius: var(--radius-sm);
+  padding: 15px; font-size: 16px; font-weight: 700;
+  font-family: inherit; cursor: pointer; letter-spacing: -0.2px;
+  box-shadow: 0 4px 20px var(--accent-glow);
+  transition: transform 0.15s, box-shadow 0.15s; margin-top: 6px;
+}
+.log-btn:active { transform: scale(0.98); box-shadow: 0 2px 10px var(--accent-glow); }
+.log-btn:disabled { opacity: 0.5; }
+.log-hint { font-size: 12px; color: var(--text3); min-height: 18px; margin-top: 6px; text-align: center; }
+.log-hint.ok { color: var(--green); }
+.log-hint.err { color: var(--red); }
+
+/* ── PILLS ── */
+.pills-wrap { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.pills-wrap::-webkit-scrollbar { display: none; }
+.pill {
+  flex-shrink: 0; font-size: 12px; font-weight: 500; padding: 6px 14px;
+  border-radius: 20px; border: .5px solid var(--border);
+  background: var(--surface); color: var(--text2); cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.pill:active { transform: scale(0.96); }
+.pill.sel {
+  background: rgba(124,110,245,0.2); border-color: var(--accent);
+  color: var(--accent2); font-weight: 600;
+}
+
+/* ── INV TYPE PILLS ── */
+.inv-type-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.inv-type {
+  font-size: 11px; font-weight: 500; padding: 8px 4px; border-radius: 8px;
+  border: .5px solid var(--border); background: var(--surface); color: var(--text2);
+  cursor: pointer; text-align: center; font-family: inherit; transition: all 0.15s;
+}
+.inv-type.sel { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+
+/* ── QUICK BTNS ── */
+.quick-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+.quick-btn {
+  background: var(--surface); border: .5px solid var(--border);
+  border-radius: var(--radius); padding: 14px; cursor: pointer;
+  text-align: left; font-family: inherit; transition: all 0.15s;
+  display: flex; align-items: center; gap: 12px;
+}
+.quick-btn:active { transform: scale(0.97); background: var(--surface2); }
+.quick-icon-wrap {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.quick-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.quick-amt { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* ── EF HERO ── */
+.ef-hero {
+  margin: 16px 16px 0;
+  background: linear-gradient(135deg, #0F1E3C 0%, #0A0F1E 60%, #0F1A2A 100%);
+  border-radius: var(--radius-lg); padding: 22px;
+  border: .5px solid rgba(96,165,250,0.2); position: relative; overflow: hidden;
+}
+.ef-hero::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(96,165,250,0.2) 0%, transparent 70%);
+}
+.ef-hero-label { font-size: 11px; color: rgba(240,240,248,0.45); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.ef-hero-val { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin: 6px 0 2px; }
+.ef-hero-sub { font-size: 12px; color: rgba(240,240,248,0.45); }
+.ef-prog-track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 16px; overflow: hidden; }
+.ef-prog-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #93C5FD); border-radius: 2px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+.ef-stats-row { display: flex; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: .5px solid rgba(255,255,255,0.07); }
+.ef-stat-val { font-size: 14px; font-weight: 700; color: #fff; }
+.ef-stat-label { font-size: 10px; color: rgba(240,240,248,0.4); margin-top: 2px; }
+
+/* ── INV HERO ── */
+.inv-hero {
+  margin: 16px 16px 0;
+  background: linear-gradient(135deg, #0F2A1E 0%, #0A1A0F 60%, #0F221A 100%);
+  border-radius: var(--radius-lg); padding: 22px;
+  border: .5px solid rgba(52,211,153,0.2); position: relative; overflow: hidden;
+}
+.inv-hero::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(52,211,153,0.15) 0%, transparent 70%);
+}
+.inv-hero-label { font-size: 11px; color: rgba(240,240,248,0.45); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.inv-hero-val { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin: 6px 0 2px; }
+.inv-hero-sub { font-size: 12px; color: rgba(240,240,248,0.45); }
+.inv-prog-track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 16px; overflow: hidden; }
+.inv-prog-fill { height: 100%; background: linear-gradient(90deg, var(--green), #6EE7B7); border-radius: 2px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── LEDGER ── */
+.ledger-tabs-row { display: flex; gap: 6px; padding: 0 16px 10px; }
+.ltab {
+  flex: 1; font-size: 12px; font-weight: 500; padding: 7px;
+  text-align: center; color: var(--text3); cursor: pointer; border: none;
+  background: var(--surface); font-family: inherit; border-radius: 8px;
+  transition: all 0.15s;
+}
+.ltab.act { background: var(--surface2); color: var(--text); border: .5px solid var(--border2); }
+.entry-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border-bottom: .5px solid var(--border);
+  transition: background 0.15s;
+}
+.entry-row:last-child { border-bottom: none; }
+.entry-row:active { background: var(--surface2); }
+.entry-icon-wrap {
+  width: 38px; height: 38px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.entry-info { flex: 1; min-width: 0; }
+.entry-desc { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry-meta { font-size: 11px; color: var(--text3); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+.entry-tag { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; }
+.entry-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.entry-amt { font-size: 15px; font-weight: 700; color: var(--text); flex-shrink: 0; }
+.entry-del {
+  background: none; border: none; color: var(--text3);
+  font-size: 14px; cursor: pointer; padding: 2px 4px; border-radius: 4px;
+  transition: color 0.15s;
+}
+.entry-del:active { color: var(--red); }
+.empty {
+  padding: 48px 20px; text-align: center; color: var(--text3); font-size: 14px;
+}
+.empty-icon { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+.empty-title { font-size: 16px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+
+/* ── CSV ROW ── */
+.csv-row { display: flex; gap: 8px; align-items: center; padding: 0 16px 12px; }
+.csv-select {
+  flex: 1; font-size: 13px; padding: 10px 14px;
+  border: .5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); font-family: inherit; outline: none;
+  appearance: none; -webkit-appearance: none;
+}
+.csv-btn {
+  font-size: 13px; font-weight: 600; padding: 10px 16px;
+  border-radius: var(--radius-sm); border: .5px solid var(--border2);
+  background: var(--surface2); color: var(--text); font-family: inherit; cursor: pointer;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: calc(var(--safe-bottom) + 80px); left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(30,30,46,0.95); color: var(--text);
+  padding: 12px 22px; border-radius: 24px; font-size: 13px; font-weight: 500;
+  opacity: 0; transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none; white-space: nowrap; z-index: 999;
+  border: .5px solid var(--border2); backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── INFO CHIP ── */
+.info-chip {
+  margin: 10px 16px 0; background: var(--green-dim);
+  border: .5px solid rgba(52,211,153,0.2); border-radius: var(--radius-sm);
+  padding: 10px 14px; font-size: 12px; color: var(--green); line-height: 1.5;
+}
+
+/* ── CLEAR BTN ── */
+.clear-btn {
+  font-size: 12px; color: var(--text3); background: none; border: none;
+  font-family: inherit; cursor: pointer; padding: 2px;
+}
+</style>
 </head>
 <body>
 
-
-
 <!-- HEADER -->
 <div class="app-hdr">
-  <div class="hdr-l">
+  <div class="hdr-logo-wrap">
     <div class="hdr-logo">📊</div>
     <div>
-      <div class="hdr-title" id="pageTitle">Dashboard</div>
+      <div class="hdr-title">BCE</div>
       <div class="hdr-sub">BuBu Chui Enterprises</div>
     </div>
   </div>
-  <div class="month-chip" id="monthChip2"></div>
+  <div class="month-badge" id="monthBadge"></div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ═══════ DASHBOARD ═══════ -->
 <div class="page act" id="pageDash">
-  <div class="kpi-grid">
-    <div class="kpi"><div class="kpi-label">Expenses this month</div><div class="kpi-val cp" id="dExp">₹0</div><div class="kpi-note" id="dExpN">of ₹1,61,000 budget</div></div>
-    <div class="kpi"><div class="kpi-label">Invested this month</div><div class="kpi-val cg" id="dInv">₹0</div><div class="kpi-note" id="dInvN">of ₹1,00,000 target</div></div>
-    <div class="kpi"><div class="kpi-label">Emergency fund added</div><div class="kpi-val cb" id="dEF">₹0</div><div class="kpi-note" id="dEFN">of ₹61,000 target</div></div>
-    <div class="kpi"><div class="kpi-label">Savings rate</div><div class="kpi-val cg" id="dSav">—</div><div class="kpi-note">of ₹3,28,000 income</div></div>
+
+  <!-- Hero spend card -->
+  <div class="hero-card">
+    <div class="hero-label">Spent this month</div>
+    <div class="hero-amount" id="hSpent">₹0</div>
+    <div class="hero-sub" id="hSpentSub">of ₹1,61,000 budget</div>
+    <div class="hero-progress-wrap">
+      <div class="hero-progress-labels">
+        <span id="hProgLeft">₹1,61,000 left</span>
+        <span id="hProgPct">0%</span>
+      </div>
+      <div class="hero-track">
+        <div class="hero-fill" id="hProgFill" style="width:0%;background:linear-gradient(90deg,#7C6EF5,#9D93F7);"></div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val" id="hStatToday">₹0</div><div class="hero-stat-label">TODAY</div></div>
+      <div><div class="hero-stat-val cg" id="hStatInv">₹0</div><div class="hero-stat-label">INVESTED</div></div>
+      <div><div class="hero-stat-val" id="hStatSav">—</div><div class="hero-stat-label">SAVINGS %</div></div>
+    </div>
   </div>
-  <div class="sec-hdr"><div class="sec-title">Monthly allocation</div></div>
-  <div class="buckets">
-    <div class="bucket"><div class="bucket-icon">🛒</div><div class="bucket-amt cp" id="bkExp">₹0</div><div class="bucket-sub" id="bkExpSub">0% used</div><div class="bucket-label">Expenses</div></div>
-    <div class="bucket"><div class="bucket-icon">📈</div><div class="bucket-amt cg" id="bkInv">₹0</div><div class="bucket-sub" id="bkInvSub">0% of target</div><div class="bucket-label">Investments</div></div>
-    <div class="bucket"><div class="bucket-icon">🛡️</div><div class="bucket-amt cb" id="bkEF">₹0</div><div class="bucket-sub" id="bkEFSub">0% of target</div><div class="bucket-label">Emergency</div></div>
+
+  <!-- Bucket strip -->
+  <div class="sec">
+    <div class="sec-title">Monthly allocation</div>
+    <div class="bucket-strip">
+      <div class="bucket-card exp">
+        <div class="bucket-icon">🛒</div>
+        <div class="bucket-amt" id="bkExp" style="color:var(--accent2)">₹0</div>
+        <div class="bucket-pct" id="bkExpPct">0%</div>
+        <div class="bucket-name">Expenses</div>
+      </div>
+      <div class="bucket-card inv">
+        <div class="bucket-icon">📈</div>
+        <div class="bucket-amt" id="bkInv" style="color:var(--green)">₹0</div>
+        <div class="bucket-pct" id="bkInvPct">0%</div>
+        <div class="bucket-name">Invested</div>
+      </div>
+      <div class="bucket-card ef">
+        <div class="bucket-icon">🛡️</div>
+        <div class="bucket-amt" id="bkEF" style="color:var(--blue)">₹0</div>
+        <div class="bucket-pct" id="bkEFPct">0%</div>
+        <div class="bucket-name">Emergency</div>
+      </div>
+    </div>
   </div>
-  <div class="sec-hdr"><div class="sec-title">Expense budget</div></div>
-  <div class="prog-card">
-    <div class="prog-header"><span id="progLabel">₹0 spent</span><span id="progPct">0%</span></div>
-    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%;background:var(--green);"></div></div>
-    <div class="prog-sub" id="progSub">₹1,61,000 remaining</div>
+
+  <!-- Progress bars -->
+  <div class="sec">
+    <div class="sec-title">Targets this month</div>
+    <div class="glass-card">
+      <div class="mini-prog-card">
+        <div class="mini-prog-row">
+          <div class="mini-prog-icon" style="background:rgba(124,110,245,0.15);">🛒</div>
+          <div class="mini-prog-info">
+            <div class="mini-prog-top">
+              <span class="mini-prog-name">Expenses</span>
+              <span class="mini-prog-vals" id="mpExpVals">₹0 / ₹1,61,000</span>
+            </div>
+            <div class="mini-track"><div class="mini-fill" id="mpExpFill" style="width:0%;background:var(--accent);"></div></div>
+          </div>
+        </div>
+        <div class="mini-prog-row">
+          <div class="mini-prog-icon" style="background:rgba(52,211,153,0.15);">📈</div>
+          <div class="mini-prog-info">
+            <div class="mini-prog-top">
+              <span class="mini-prog-name">Investments</span>
+              <span class="mini-prog-vals" id="mpInvVals">₹0 / ₹1,00,000</span>
+            </div>
+            <div class="mini-track"><div class="mini-fill" id="mpInvFill" style="width:0%;background:var(--green);"></div></div>
+          </div>
+        </div>
+        <div class="mini-prog-row">
+          <div class="mini-prog-icon" style="background:rgba(96,165,250,0.15);">🛡️</div>
+          <div class="mini-prog-info">
+            <div class="mini-prog-top">
+              <span class="mini-prog-name">Emergency fund</span>
+              <span class="mini-prog-vals" id="mpEFVals">₹0 / ₹61,000</span>
+            </div>
+            <div class="mini-track"><div class="mini-fill" id="mpEFFill" style="width:0%;background:var(--blue);"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="sec-hdr"><div class="sec-title">Emergency fund — all time</div></div>
-  <div class="prog-card">
-    <div class="prog-header"><span id="efTotalLabel">Total: ₹3,50,000</span><span id="efTotalPct">17%</span></div>
-    <div class="prog-track"><div class="prog-fill" id="efTotalFill" style="width:17%;background:var(--blue);"></div></div>
-    <div class="prog-sub" id="efTotalSub">Target: ₹19,68,000 · ₹16,18,000 to go</div>
+
+  <!-- Emergency fund all-time -->
+  <div class="sec">
+    <div class="sec-title">Emergency fund — total</div>
+    <div class="glass-card">
+      <div class="mini-prog-card">
+        <div class="mini-prog-row" style="margin-bottom:0;">
+          <div class="mini-prog-icon" style="background:rgba(96,165,250,0.15);">🏦</div>
+          <div class="mini-prog-info">
+            <div class="mini-prog-top">
+              <span class="mini-prog-name" id="efAllLabel">₹3,50,000 saved</span>
+              <span class="mini-prog-vals" id="efAllPct">17%</span>
+            </div>
+            <div class="mini-track"><div class="mini-fill" id="efAllFill" style="width:17%;background:var(--blue);"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="sec-hdr"><div class="sec-title">Expense breakdown</div></div>
-  <div class="card"><div class="bars-wrap" id="dashBars"><div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No expenses logged yet</div></div></div>
-  <div class="sec-hdr"><div class="sec-title">Investment breakdown</div></div>
-  <div class="card"><div class="bars-wrap" id="invBars"><div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No investments logged yet</div></div></div>
-  <div class="sec-hdr"><div class="sec-title">Expense category split</div></div>
-  <div class="card"><div class="donut-wrap"><canvas id="donut" width="120" height="120"></canvas><div class="donut-legend" id="donutLegend"><div style="font-size:13px;color:var(--text-faint);">Log expenses to see breakdown</div></div></div></div>
+
+  <!-- Expense category bars -->
+  <div class="sec">
+    <div class="sec-title">Where it's going</div>
+    <div class="glass-card">
+      <div class="cat-bars-wrap" id="catBarsWrap">
+        <div style="font-size:13px;color:var(--text3);text-align:center;padding:8px 0;">Log expenses to see breakdown</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donut chart -->
+  <div class="sec" style="padding-bottom:0;">
+    <div class="sec-title">Expense split</div>
+    <div class="glass-card">
+      <div class="donut-wrap">
+        <canvas id="donut" width="110" height="110" aria-label="Expense category chart"></canvas>
+        <div class="donut-legend" id="donutLegend">
+          <div style="font-size:13px;color:var(--text3);">Log expenses to see</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div style="height:10px;"></div>
 </div>
 
-<!-- LOG -->
+<!-- ═══════ LOG ═══════ -->
 <div class="page" id="pageLog">
   <div class="page-tabs">
     <button class="ptab act" id="ptExp" onclick="setLogTab('Exp')">🛒 Expenses</button>
-    <button class="ptab" id="ptInv" onclick="setLogTab('Inv')">📈 Investments</button>
+    <button class="ptab" id="ptInv" onclick="setLogTab('Inv')">📈 Invest</button>
     <button class="ptab" id="ptEF" onclick="setLogTab('EF')">🛡️ Emergency</button>
   </div>
 
-  <!-- EXPENSES SUB -->
+  <!-- EXPENSES -->
   <div class="sub-page act" id="subExp">
-    <div class="sec-hdr" style="padding-top:16px;"><div class="sec-title">Log an expense</div></div>
-    <div class="card">
-      <div class="log-wrap">
-        <input class="log-input" id="expDesc" placeholder="e.g. Zomato dinner, Big Bazaar groceries..." autocomplete="off"/>
-        <input class="date-input" id="expDate" type="date"/>
-        <div class="log-row">
-          <input class="log-amt" id="expAmt" type="number" placeholder="₹ Amount" min="1" inputmode="decimal"/>
-          <button class="log-btn" id="expBtn" onclick="addExpense()">Add</button>
-        </div>
-        <div class="log-hint" id="expHint">Select a category or let AI pick it</div>
+    <div class="log-section">
+      <div class="input-group">
+        <div class="input-label">What did you spend on?</div>
+        <input class="log-input" id="expDesc" placeholder="e.g. Zomato dinner, Big Bazaar..." autocomplete="off"/>
       </div>
+      <div class="input-group">
+        <div class="input-label">Date</div>
+        <input class="log-input" id="expDate" type="date"/>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Amount</div>
+        <input class="log-input amt-input" id="expAmt" type="number" placeholder="₹0" min="1" inputmode="decimal"/>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Category</div>
+        <div class="pills-wrap" id="expPills"></div>
+      </div>
+      <button class="log-btn" id="expBtn" onclick="addExpense()">Log Expense</button>
+      <div class="log-hint" id="expHint">AI will auto-categorise if none selected</div>
     </div>
-    <div class="sec-hdr"><div class="sec-title">Category</div></div>
-    <div class="pills-scroll" id="expPills"></div>
-    <div class="sec-hdr"><div class="sec-title">Quick add</div></div>
-    <div class="card">
+
+    <div class="sec">
+      <div class="sec-title">Quick add</div>
       <div class="quick-grid">
-        <button class="quick-btn" onclick="quickExp('Home rent','Home & rent',60000)"><div class="quick-icon">🏠</div><div class="quick-name">Home rent</div><div class="quick-amt">₹60,000</div></button>
-        <button class="quick-btn" onclick="quickExp('Electricity bill','Utilities',4000)"><div class="quick-icon">⚡</div><div class="quick-name">Electricity</div><div class="quick-amt">₹4,000</div></button>
-        <button class="quick-btn" onclick="quickExp('Maid / cook','Household',11000)"><div class="quick-icon">🧹</div><div class="quick-name">Maid / cook</div><div class="quick-amt">₹11,000</div></button>
-        <button class="quick-btn" onclick="quickExp('Office travel','Transport',16000)"><div class="quick-icon">🚌</div><div class="quick-name">Office travel</div><div class="quick-amt">₹16,000</div></button>
+        <button class="quick-btn" onclick="quickExp('Home rent','Home & rent',60000)">
+          <div class="quick-icon-wrap" style="background:rgba(124,110,245,0.15);">🏠</div>
+          <div><div class="quick-name">Home rent</div><div class="quick-amt">₹60,000</div></div>
+        </button>
+        <button class="quick-btn" onclick="quickExp('Electricity bill','Utilities',4000)">
+          <div class="quick-icon-wrap" style="background:rgba(251,191,36,0.15);">⚡</div>
+          <div><div class="quick-name">Electricity</div><div class="quick-amt">₹4,000</div></div>
+        </button>
+        <button class="quick-btn" onclick="quickExp('Maid / cook','Household',11000)">
+          <div class="quick-icon-wrap" style="background:rgba(244,114,182,0.15);">🧹</div>
+          <div><div class="quick-name">Maid / cook</div><div class="quick-amt">₹11,000</div></div>
+        </button>
+        <button class="quick-btn" onclick="quickExp('Office travel','Transport',16000)">
+          <div class="quick-icon-wrap" style="background:rgba(96,165,250,0.15);">🚌</div>
+          <div><div class="quick-name">Office travel</div><div class="quick-amt">₹16,000</div></div>
+        </button>
       </div>
     </div>
     <div style="height:10px;"></div>
   </div>
 
-  <!-- INVESTMENTS SUB -->
+  <!-- INVESTMENTS -->
   <div class="sub-page" id="subInv">
-    <div class="inv-target-card">
-      <div class="inv-target-label">Invested this month</div>
-      <div class="inv-target-val" id="invMonthTotal">₹0</div>
-      <div class="inv-target-sub" id="invMonthSub">Target: ₹1,00,000 · ₹1,00,000 remaining</div>
-      <div class="ef-prog-track" style="margin-top:10px;"><div class="ef-prog-fill" id="invProgFill" style="width:0%;"></div></div>
+    <div class="inv-hero">
+      <div class="inv-hero-label">Invested this month</div>
+      <div class="inv-hero-val" id="invHeroVal">₹0</div>
+      <div class="inv-hero-sub" id="invHeroSub">₹1,00,000 remaining</div>
+      <div class="inv-prog-track"><div class="inv-prog-fill" id="invHeroFill" style="width:0%;"></div></div>
     </div>
-    <div class="sec-hdr" style="padding-top:16px;"><div class="sec-title">Log an investment</div></div>
-    <div class="card">
-      <div class="log-wrap">
-        <input class="log-input" id="invDesc" placeholder="e.g. Axis Bluechip SIP, PPF deposit, Gold Bond..." autocomplete="off"/>
-        <div style="margin-bottom:8px;">
-          <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:500;">Investment type</div>
-          <div class="inv-type-grid" id="invTypePills"></div>
-        </div>
-        <input class="date-input" id="invDate" type="date"/>
-        <div class="log-row">
-          <input class="log-amt" id="invAmt" type="number" placeholder="₹ Amount" min="1" inputmode="decimal"/>
-          <button class="log-btn" id="invBtn" onclick="addInvestment()">Add</button>
-        </div>
-        <div class="log-hint" id="invHint">Log each SIP, MF, PPF, gold bond separately</div>
+    <div class="log-section">
+      <div class="input-group">
+        <div class="input-label">Description</div>
+        <input class="log-input" id="invDesc" placeholder="e.g. Axis Bluechip SIP, PPF deposit..." autocomplete="off"/>
       </div>
+      <div class="input-group">
+        <div class="input-label">Type</div>
+        <div class="inv-type-grid" id="invTypePills"></div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Date</div>
+        <input class="log-input" id="invDate" type="date"/>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Amount</div>
+        <input class="log-input amt-input" id="invAmt" type="number" placeholder="₹0" min="1" inputmode="decimal"/>
+      </div>
+      <button class="log-btn" id="invBtn" onclick="addInvestment()" style="background:linear-gradient(135deg,var(--green),#059669);box-shadow:0 4px 20px rgba(52,211,153,0.25);">Log Investment</button>
+      <div class="log-hint" id="invHint">Log each SIP, MF, PPF separately</div>
     </div>
-    <div class="sec-hdr"><div class="sec-title">Quick add</div></div>
-    <div class="card">
+    <div class="sec">
+      <div class="sec-title">Quick fill</div>
       <div class="quick-grid">
-        <button class="quick-btn" onclick="quickInv('SIP — Mutual Fund','Mutual Fund')"><div class="quick-icon">📊</div><div class="quick-name">Mutual Fund SIP</div><div class="quick-amt">Tap to fill</div></button>
-        <button class="quick-btn" onclick="quickInv('PPF deposit','PPF')"><div class="quick-icon">🏦</div><div class="quick-name">PPF deposit</div><div class="quick-amt">Tap to fill</div></button>
-        <button class="quick-btn" onclick="quickInv('Gold Bond','Gold Bond')"><div class="quick-icon">🥇</div><div class="quick-name">Gold Bond</div><div class="quick-amt">Tap to fill</div></button>
-        <button class="quick-btn" onclick="quickInv('NPS contribution','NPS')"><div class="quick-icon">🏛️</div><div class="quick-name">NPS</div><div class="quick-amt">Tap to fill</div></button>
+        <button class="quick-btn" onclick="quickInv('SIP — Mutual Fund','Mutual Fund')">
+          <div class="quick-icon-wrap" style="background:rgba(52,211,153,0.15);">📊</div>
+          <div><div class="quick-name">Mutual Fund</div><div class="quick-amt">Enter amount</div></div>
+        </button>
+        <button class="quick-btn" onclick="quickInv('PPF deposit','PPF')">
+          <div class="quick-icon-wrap" style="background:rgba(96,165,250,0.15);">🏦</div>
+          <div><div class="quick-name">PPF</div><div class="quick-amt">Enter amount</div></div>
+        </button>
+        <button class="quick-btn" onclick="quickInv('Gold Bond','Gold Bond')">
+          <div class="quick-icon-wrap" style="background:rgba(251,191,36,0.15);">🥇</div>
+          <div><div class="quick-name">Gold Bond</div><div class="quick-amt">Enter amount</div></div>
+        </button>
+        <button class="quick-btn" onclick="quickInv('NPS contribution','NPS')">
+          <div class="quick-icon-wrap" style="background:rgba(244,114,182,0.15);">🏛️</div>
+          <div><div class="quick-name">NPS</div><div class="quick-amt">Enter amount</div></div>
+        </button>
       </div>
     </div>
     <div style="height:10px;"></div>
   </div>
 
-  <!-- EMERGENCY SUB -->
+  <!-- EMERGENCY FUND -->
   <div class="sub-page" id="subEF">
-    <div class="ef-balance-card">
-      <div class="ef-bal-label">Total emergency fund balance</div>
-      <div class="ef-bal-val" id="efTotalBal">₹3,50,000</div>
-      <div class="ef-bal-sub" id="efBalSub">Starting ₹3,50,000 + deposits</div>
-      <div class="ef-target-row">
-        <div class="ef-target-label">Target (6 months income)</div>
-        <div class="ef-target-val">₹19,68,000</div>
+    <div class="ef-hero">
+      <div class="ef-hero-label">Emergency fund balance</div>
+      <div class="ef-hero-val" id="efHeroVal">₹3,50,000</div>
+      <div class="ef-hero-sub" id="efHeroSub">Starting ₹3,50,000</div>
+      <div class="ef-prog-track"><div class="ef-prog-fill" id="efHeroFill" style="width:17.8%;"></div></div>
+      <div class="ef-stats-row">
+        <div><div class="ef-stat-val">₹19,68,000</div><div class="ef-stat-label">TARGET</div></div>
+        <div style="text-align:center;"><div class="ef-stat-val" id="efHeroPct">17%</div><div class="ef-stat-label">COMPLETE</div></div>
+        <div style="text-align:right;"><div class="ef-stat-val" id="efHeroLeft">₹16,18,000</div><div class="ef-stat-label">TO GO</div></div>
       </div>
-      <div class="ef-prog-track"><div class="ef-prog-fill" id="efBalFill" style="width:17.8%;"></div></div>
     </div>
-    <div class="info-banner">Monthly target: ₹61,000 · Builds your 6-month corpus in ~2.5 years</div>
-    <div class="sec-hdr" style="padding-top:16px;"><div class="sec-title">Log a deposit</div></div>
-    <div class="card">
-      <div class="log-wrap">
+    <div class="info-chip">Monthly target: ₹61,000 · Builds 6-month corpus in ~2.5 years</div>
+    <div class="log-section">
+      <div class="input-group">
+        <div class="input-label">Description</div>
         <input class="log-input" id="efDesc" placeholder="e.g. Monthly EF deposit, Bonus transfer..." autocomplete="off"/>
-        <input class="date-input" id="efDate" type="date"/>
-        <div class="log-row">
-          <input class="log-amt" id="efAmt" type="number" placeholder="₹ Amount" min="1" inputmode="decimal"/>
-          <button class="log-btn" id="efBtn" onclick="addEF()">Add</button>
-        </div>
-        <div class="log-hint" id="efHint">This month's target: ₹61,000</div>
       </div>
+      <div class="input-group">
+        <div class="input-label">Date</div>
+        <input class="log-input" id="efDate" type="date"/>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Amount</div>
+        <input class="log-input amt-input" id="efAmt" type="number" placeholder="₹0" min="1" inputmode="decimal"/>
+      </div>
+      <button class="log-btn" id="efBtn" onclick="addEF()" style="background:linear-gradient(135deg,var(--blue),#2563EB);box-shadow:0 4px 20px rgba(96,165,250,0.25);">Log Deposit</button>
+      <div class="log-hint" id="efHint">This month's target: ₹61,000</div>
     </div>
-    <div class="sec-hdr"><div class="sec-title">This month</div></div>
-    <div class="prog-card">
-      <div class="prog-header"><span id="efMLabel">₹0 deposited</span><span id="efMPct">0%</span></div>
-      <div class="prog-track"><div class="prog-fill" id="efMFill" style="width:0%;background:var(--blue);"></div></div>
-      <div class="prog-sub" id="efMSub">₹61,000 remaining this month</div>
+    <div class="sec">
+      <div class="sec-title">This month</div>
+      <div class="glass-card">
+        <div class="mini-prog-card">
+          <div class="mini-prog-row" style="margin-bottom:0;">
+            <div class="mini-prog-icon" style="background:rgba(96,165,250,0.15);">🛡️</div>
+            <div class="mini-prog-info">
+              <div class="mini-prog-top">
+                <span class="mini-prog-name" id="efMonthLabel">₹0 deposited</span>
+                <span class="mini-prog-vals" id="efMonthPct">0% of ₹61,000</span>
+              </div>
+              <div class="mini-track"><div class="mini-fill" id="efMonthFill" style="width:0%;background:var(--blue);"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div style="height:10px;"></div>
   </div>
 </div>
 
-<!-- LEDGER -->
+<!-- ═══════ LEDGER ═══════ -->
 <div class="page" id="pageLedger">
   <div class="page-tabs">
     <button class="ptab act" id="ltpExp" onclick="setLedgerType('exp')">🛒 Expenses</button>
-    <button class="ptab" id="ltpInv" onclick="setLedgerType('inv')">📈 Investments</button>
-    <button class="ptab" id="ltpEF" onclick="setLedgerType('ef')">🛡️ Emergency</button>
+    <button class="ptab" id="ltpInv" onclick="setLedgerType('inv')">📈 Invest</button>
+    <button class="ptab" id="ltpEF"  onclick="setLedgerType('ef')">🛡️ Emergency</button>
   </div>
-  <div class="sec-hdr">
-    <div class="sec-title" id="ledgerTitle">Expense entries</div>
-    <button class="sec-act" onclick="doClear()">Clear all</button>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 4px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);" id="ledgerTitle">Expenses</div>
+    <button class="clear-btn" onclick="doClear()">Clear all</button>
   </div>
+
   <div class="csv-row">
     <select id="csvMonth" class="csv-select"></select>
-    <button onclick="downloadCSV()" class="csv-btn">⬇ CSV</button>
+    <button onclick="downloadCSV()" class="csv-btn">⬇ Export CSV</button>
   </div>
-  <div class="card">
-    <div class="ledger-tabs">
-      <button class="ltab act" id="ltAll" onclick="setLTab('all')">All</button>
-      <button class="ltab" id="ltToday" onclick="setLTab('today')">Today</button>
-      <button class="ltab" id="ltWeek" onclick="setLTab('week')">This week</button>
-    </div>
+
+  <div class="ledger-tabs-row">
+    <button class="ltab act" id="ltAll"   onclick="setLTab('all')">All</button>
+    <button class="ltab"     id="ltToday" onclick="setLTab('today')">Today</button>
+    <button class="ltab"     id="ltWeek"  onclick="setLTab('week')">This week</button>
+  </div>
+
+  <div class="glass-card" style="margin:0 16px;">
     <div id="ledgerBody"></div>
   </div>
   <div style="height:10px;"></div>
@@ -329,60 +741,54 @@
 
 <!-- BOTTOM NAV -->
 <nav class="nav">
-  <button class="nav-btn act" id="navDash" onclick="goPage('Dash')"><span class="nav-icon">📊</span>Dashboard</button>
-  <button class="nav-btn" id="navLog" onclick="goPage('Log')"><span class="nav-icon">➕</span>Log</button>
-  <button class="nav-btn" id="navLedger" onclick="goPage('Ledger')"><span class="nav-icon">📋</span>Ledger</button>
+  <button class="nav-btn act" id="navDash"   onclick="goPage('Dash')">  <span class="nav-icon">📊</span>Dashboard</button>
+  <button class="nav-btn"     id="navLog"    onclick="goPage('Log')">   <span class="nav-icon">➕</span>Log</button>
+  <button class="nav-btn"     id="navLedger" onclick="goPage('Ledger')"><span class="nav-icon">📋</span>Ledger</button>
 </nav>
+
 <div class="toast" id="toast"></div>
 
-<!-- FIREBASE -->
 <script>
-/* ══ LOCAL STORAGE MODE ══ */
-
 /* ══ CONSTANTS ══ */
-const BUDGET=161000, INV_TARGET=100000, EF_TARGET_MONTHLY=61000;
-const EF_TOTAL_TARGET=1968000, EF_STARTING=350000, INCOME=328000;
+const BUDGET=161000,INV_TARGET=100000,EF_MONTHLY=61000,EF_TOTAL_TARGET=1968000,EF_START=350000,INCOME=328000;
 
 const CATS={
-  'Home & rent':   {c:'#534AB7',bg:'#EEEDFE',t:'#3C3489',b:60000},
-  'Groceries':     {c:'#1D9E75',bg:'#E1F5EE',t:'#085041',b:20000},
-  'Food & dining': {c:'#378ADD',bg:'#E6F1FB',t:'#0C447C',b:15000},
-  'Transport':     {c:'#888780',bg:'#F1EFE8',t:'#444441',b:16000},
-  'Entertainment': {c:'#D4537E',bg:'#FBEAF0',t:'#72243E',b:15000},
-  'Shopping':      {c:'#BA7517',bg:'#FAEEDA',t:'#633806',b:15000},
-  'Health':        {c:'#639922',bg:'#EAF3DE',t:'#27500A',b:5000},
-  'Utilities':     {c:'#D85A30',bg:'#FAECE7',t:'#712B13',b:4000},
-  'Household':     {c:'#7F77DD',bg:'#EEEDFE',t:'#26215C',b:11000},
-  'Other':         {c:'#B4B2A9',bg:'#F1EFE8',t:'#5F5E5A',b:0}
+  'Home & rent':   {c:'#7C6EF5',bg:'rgba(124,110,245,0.15)',b:60000,icon:'🏠'},
+  'Groceries':     {c:'#34D399',bg:'rgba(52,211,153,0.15)', b:20000,icon:'🛒'},
+  'Food & dining': {c:'#60A5FA',bg:'rgba(96,165,250,0.15)', b:15000,icon:'🍽️'},
+  'Transport':     {c:'#94A3B8',bg:'rgba(148,163,184,0.15)',b:16000,icon:'🚗'},
+  'Entertainment': {c:'#F472B6',bg:'rgba(244,114,182,0.15)',b:15000,icon:'🎬'},
+  'Shopping':      {c:'#FBBF24',bg:'rgba(251,191,36,0.15)', b:15000,icon:'🛍️'},
+  'Health':        {c:'#A3E635',bg:'rgba(163,230,53,0.15)', b:5000, icon:'💊'},
+  'Utilities':     {c:'#FB923C',bg:'rgba(251,146,60,0.15)', b:4000, icon:'⚡'},
+  'Household':     {c:'#C084FC',bg:'rgba(192,132,252,0.15)',b:11000,icon:'🏡'},
+  'Other':         {c:'#64748B',bg:'rgba(100,116,139,0.15)',b:0,    icon:'📌'}
 };
 const INV_TYPES=['Mutual Fund','SIP','PPF','NPS','Gold Bond','Stocks','FD','Other'];
-const INV_COLORS={'Mutual Fund':'#1D9E75','SIP':'#378ADD','PPF':'#534AB7','NPS':'#D4537E','Gold Bond':'#BA7517','Stocks':'#D85A30','FD':'#639922','Other':'#888780'};
+const INV_COLORS={'Mutual Fund':'#34D399','SIP':'#60A5FA','PPF':'#7C6EF5','NPS':'#F472B6','Gold Bond':'#FBBF24','Stocks':'#FB923C','FD':'#A3E635','Other':'#64748B'};
 
-/* ══ STATE ══ */
-let expenses=[], investments=[], emergencyFund=[];
+let expenses=[],investments=[],emergencyFund=[];
+let selExpCat=null,selInvType=null,ledgerType='exp',ledgerTab='all';
 
-/* ══ STORAGE ══ */
-function save(){
-  try{
-    localStorage.setItem('bce_exp', JSON.stringify(expenses));
-    localStorage.setItem('bce_inv', JSON.stringify(investments));
-    localStorage.setItem('bce_ef',  JSON.stringify(emergencyFund));
-  }catch(e){}
-}
-function load(){
-  try{ expenses      = JSON.parse(localStorage.getItem('bce_exp')||'[]'); }catch(e){ expenses=[]; }
-  try{ investments   = JSON.parse(localStorage.getItem('bce_inv')||'[]'); }catch(e){ investments=[]; }
-  try{ emergencyFund = JSON.parse(localStorage.getItem('bce_ef') ||'[]'); }catch(e){ emergencyFund=[]; }
-}
-let selExpCat=null, selInvType=null;
-let ledgerType='exp', ledgerTab='all';
-
-/* ══ UTILS ══ */
 const fmt  = n=>'₹'+Math.round(n).toLocaleString('en-IN');
 const today= ()=>new Date().toISOString().split('T')[0];
 const fmtD = s=>new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'});
 const curM = ()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');};
 const pct  = (a,b)=>b>0?Math.min(100,Math.round(a/b*100)):0;
+
+/* ══ STORAGE ══ */
+function save(){
+  try{
+    localStorage.setItem('bce_exp',JSON.stringify(expenses));
+    localStorage.setItem('bce_inv',JSON.stringify(investments));
+    localStorage.setItem('bce_ef', JSON.stringify(emergencyFund));
+  }catch(e){}
+}
+function load(){
+  try{expenses      =JSON.parse(localStorage.getItem('bce_exp')||'[]');}catch(e){expenses=[];}
+  try{investments   =JSON.parse(localStorage.getItem('bce_inv')||'[]');}catch(e){investments=[];}
+  try{emergencyFund =JSON.parse(localStorage.getItem('bce_ef') ||'[]');}catch(e){emergencyFund=[];}
+}
 
 /* ══ TOAST ══ */
 function toast(msg){
@@ -391,20 +797,15 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-function setSyncStatus(s){} // localStorage mode
-
-function startListeners(){} // localStorage mode
-
-/* ══ NAVIGATION ══ */
+/* ══ NAV ══ */
 function goPage(p){
   ['Dash','Log','Ledger'].forEach(x=>{
     document.getElementById('page'+x).classList.toggle('act',x===p);
     document.getElementById('nav'+x).classList.toggle('act',x===p);
   });
-  const titles={Dash:'Dashboard',Log:'Log Entry',Ledger:'Ledger'};
-  document.getElementById('pageTitle').textContent=titles[p];
+  if(p==='Dash') renderDash();
   if(p==='Ledger'){renderLedger();buildMonthSelector();}
-  if(p==='Log'){renderEFSubPage();renderInvSubPage();}
+  if(p==='Log'){renderInvSub();renderEFSub();}
 }
 window.goPage=goPage;
 
@@ -414,15 +815,15 @@ function setLogTab(t){
     document.getElementById('pt'+x).classList.toggle('act',x===t);
     document.getElementById('sub'+x).classList.toggle('act',x===t);
   });
-  if(t==='EF') renderEFSubPage();
-  if(t==='Inv') renderInvSubPage();
+  if(t==='Inv') renderInvSub();
+  if(t==='EF')  renderEFSub();
 }
 window.setLogTab=setLogTab;
 
 /* ══ PILLS ══ */
 function buildExpPills(){
-  document.getElementById('expPills').innerHTML=Object.keys(CATS).map(c=>
-    `<div class="pill${selExpCat===c?' sel':''}" onclick="pickExpCat('${c}')">${c}</div>`
+  document.getElementById('expPills').innerHTML=Object.entries(CATS).map(([c,info])=>
+    `<div class="pill${selExpCat===c?' sel':''}" onclick="pickExpCat('${c}')">${info.icon} ${c}</div>`
   ).join('');
 }
 window.pickExpCat=c=>{selExpCat=selExpCat===c?null:c;buildExpPills();};
@@ -434,7 +835,7 @@ function buildInvTypePills(){
 }
 window.pickInvType=t=>{selInvType=selInvType===t?null:t;buildInvTypePills();};
 
-/* ══ AI CATEGORISE ══ */
+/* ══ AI CAT ══ */
 async function aiCat(desc){
   const h=document.getElementById('expHint');
   h.textContent='AI categorising...';h.className='log-hint';
@@ -445,7 +846,7 @@ async function aiCat(desc){
     h.textContent='Categorised as: '+cat;h.className='log-hint ok';
     return cat;
   }catch(e){
-    h.textContent='Tap a category above to select';h.className='log-hint err';
+    h.textContent='Select a category above';h.className='log-hint err';
     return selExpCat||'Other';
   }
 }
@@ -459,7 +860,7 @@ async function addExpense(){
   if(!desc){h.textContent='Enter a description';h.className='log-hint err';return;}
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('expBtn');
-  btn.disabled=true;btn.textContent='...';
+  btn.disabled=true;btn.textContent='Logging...';
   const cat=selExpCat||await aiCat(desc);
   expenses.unshift({id:Date.now(),desc,amt,cat,date,month:date.substring(0,7),createdAt:Date.now()});
   save();renderDash();renderLedger();
@@ -467,16 +868,15 @@ async function addExpense(){
   document.getElementById('expAmt').value='';
   document.getElementById('expDate').value=today();
   selExpCat=null;buildExpPills();
-  btn.disabled=false;btn.textContent='Add';
-  setTimeout(()=>{h.textContent='Select a category or let AI pick it';h.className='log-hint';},2500);
-  toast('✓ Expense logged');
+  btn.disabled=false;btn.textContent='Log Expense';
+  setTimeout(()=>{h.textContent='AI will auto-categorise if none selected';h.className='log-hint';},2500);
+  toast('✓ Expense logged — '+cat);
 }
 window.addExpense=addExpense;
 
-/* ══ QUICK EXPENSE ══ */
 window.quickExp=(desc,cat,amt)=>{
   expenses.unshift({id:Date.now(),desc,amt,cat,date:today(),month:curM(),createdAt:Date.now()});
-  save();renderDash();
+  save();renderDash();renderLedger();
   toast('✓ '+desc+' added');
 };
 
@@ -490,28 +890,27 @@ async function addInvestment(){
   if(!desc){h.textContent='Enter a description';h.className='log-hint err';return;}
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('invBtn');
-  btn.disabled=true;btn.textContent='...';
+  btn.disabled=true;btn.textContent='Logging...';
   investments.unshift({id:Date.now(),desc,amt,type,date,month:date.substring(0,7),createdAt:Date.now()});
-  save();renderDash();renderLedger();renderInvSubPage();
+  save();renderDash();renderLedger();renderInvSub();
   document.getElementById('invDesc').value='';
   document.getElementById('invAmt').value='';
   document.getElementById('invDate').value=today();
   selInvType=null;buildInvTypePills();
-  btn.disabled=false;btn.textContent='Add';
-  h.textContent='✓ Investment logged';h.className='log-hint ok';
-  setTimeout(()=>{h.textContent='Log each SIP, MF, PPF, gold bond separately';h.className='log-hint';},2500);
-  toast('✓ Investment saved');
+  btn.disabled=false;btn.textContent='Log Investment';
+  h.textContent='Investment logged ✓';h.className='log-hint ok';
+  setTimeout(()=>{h.textContent='Log each SIP, MF, PPF separately';h.className='log-hint';},2500);
+  toast('✓ Investment logged — '+type);
 }
 window.addInvestment=addInvestment;
 
-/* ══ QUICK INVESTMENT ══ */
 window.quickInv=(desc,type)=>{
   document.getElementById('invDesc').value=desc;
   selInvType=type;buildInvTypePills();
   document.getElementById('invAmt').focus();
 };
 
-/* ══ ADD EMERGENCY FUND ══ */
+/* ══ ADD EF ══ */
 async function addEF(){
   const desc=document.getElementById('efDesc').value.trim()||'EF deposit';
   const amt=parseFloat(document.getElementById('efAmt').value);
@@ -519,32 +918,30 @@ async function addEF(){
   const h=document.getElementById('efHint');
   if(!amt||amt<=0){h.textContent='Enter a valid amount';h.className='log-hint err';return;}
   const btn=document.getElementById('efBtn');
-  btn.disabled=true;btn.textContent='...';
+  btn.disabled=true;btn.textContent='Logging...';
   emergencyFund.unshift({id:Date.now(),desc,amt,date,month:date.substring(0,7),createdAt:Date.now()});
-  save();renderDash();renderLedger();renderEFSubPage();
+  save();renderDash();renderLedger();renderEFSub();
   document.getElementById('efDesc').value='';
   document.getElementById('efAmt').value='';
   document.getElementById('efDate').value=today();
-  btn.disabled=false;btn.textContent='Add';
-  h.textContent='✓ Deposit logged';h.className='log-hint ok';
+  btn.disabled=false;btn.textContent='Log Deposit';
+  h.textContent='Deposit logged ✓';h.className='log-hint ok';
   setTimeout(()=>{h.textContent="This month's target: ₹61,000";h.className='log-hint';},2500);
-  toast('✓ EF deposit saved — '+fmt(amt));
+  toast('✓ EF deposit — '+fmt(amt));
 }
 window.addEF=addEF;
 
 /* ══ DELETE ══ */
 window.delEntry=(id,type)=>{
-  const numId=typeof id==='string'?id:id;
-  if(type==='exp') expenses=expenses.filter(e=>String(e.id)!==String(numId));
-  if(type==='inv') investments=investments.filter(e=>String(e.id)!==String(numId));
-  if(type==='ef')  emergencyFund=emergencyFund.filter(e=>String(e.id)!==String(numId));
+  if(type==='exp') expenses=expenses.filter(e=>String(e.id)!==String(id));
+  if(type==='inv') investments=investments.filter(e=>String(e.id)!==String(id));
+  if(type==='ef')  emergencyFund=emergencyFund.filter(e=>String(e.id)!==String(id));
   save();renderLedger();renderDash();
-  if(type==='ef') renderEFSubPage();
-  if(type==='inv') renderInvSubPage();
+  if(type==='ef') renderEFSub();
+  if(type==='inv') renderInvSub();
   toast('Entry deleted');
 };
 
-/* ══ CLEAR ALL ══ */
 window.doClear=()=>{
   if(ledgerType==='exp') expenses=[];
   if(ledgerType==='inv') investments=[];
@@ -558,12 +955,11 @@ window.setLedgerType=t=>{
   ['exp','inv','ef'].forEach(x=>{
     document.getElementById('ltp'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('act',ledgerType===x);
   });
-  const titles={exp:'Expense entries',inv:'Investment entries',ef:'Emergency fund entries'};
+  const titles={exp:'Expenses',inv:'Investments',ef:'Emergency fund'};
   document.getElementById('ledgerTitle').textContent=titles[t];
   buildMonthSelector();renderLedger();
 };
 
-/* ══ LEDGER TIME TAB ══ */
 window.setLTab=t=>{
   ledgerTab=t;
   ['all','today','week'].forEach(x=>{
@@ -582,159 +978,183 @@ function renderLedger(){
   if(ledgerTab==='today') show=show.filter(e=>e.date===td);
   if(ledgerTab==='week')  show=show.filter(e=>e.date>=wStr);
   const el=document.getElementById('ledgerBody');
-  if(!show.length){el.innerHTML='<div class="empty"><span class="empty-icon">📭</span>No entries</div>';return;}
+  if(!show.length){
+    el.innerHTML=`<div class="empty"><span class="empty-icon">📭</span><div class="empty-title">Nothing here yet</div><div>Log your first entry above</div></div>`;
+    return;
+  }
   el.innerHTML=show.map(e=>{
-    let dot='#888',chipBg='#F1EFE8',chipColor='#5F5E5A',tag='';
-    if(ledgerType==='exp'){const i=CATS[e.cat]||CATS['Other'];dot=i.c;chipBg=i.bg;chipColor=i.t;tag=e.cat;}
-    else if(ledgerType==='inv'){dot=INV_COLORS[e.type]||'#888';chipBg='#E1F5EE';chipColor='#085041';tag=e.type;}
-    else{dot='#378ADD';chipBg='#E6F1FB';chipColor='#0C447C';tag='EF deposit';}
+    let iconBg='rgba(100,116,139,0.15)',iconColor='#64748B',tag='',icon='📌',tagBg='rgba(100,116,139,0.15)',tagColor='#94A3B8';
+    if(ledgerType==='exp'){
+      const info=CATS[e.cat]||CATS['Other'];
+      iconBg=info.bg;icon=info.icon;tag=e.cat;tagBg=info.bg;tagColor=info.c;
+    }else if(ledgerType==='inv'){
+      const col=INV_COLORS[e.type]||'#64748B';
+      iconBg=`rgba(52,211,153,0.15)`;icon='📈';tag=e.type;
+      tagBg='rgba(52,211,153,0.15)';tagColor='#34D399';
+    }else{
+      iconBg='rgba(96,165,250,0.15)';icon='🛡️';tag='EF deposit';
+      tagBg='rgba(96,165,250,0.15)';tagColor='#60A5FA';
+    }
     return `<div class="entry-row">
-      <div class="entry-dot" style="background:${dot};"></div>
+      <div class="entry-icon-wrap" style="background:${iconBg};">${icon}</div>
       <div class="entry-info">
         <div class="entry-desc">${e.desc}</div>
-        <div class="entry-meta">${fmtD(e.date)} · <span class="cat-chip" style="background:${chipBg};color:${chipColor};">${tag}</span></div>
+        <div class="entry-meta">
+          ${fmtD(e.date)}
+          <span class="entry-tag" style="background:${tagBg};color:${tagColor};">${tag}</span>
+        </div>
       </div>
-      <div class="entry-amt">${fmt(e.amt)}</div>
-      <button class="entry-del" onclick="delEntry('${e.id}','${ledgerType}')" aria-label="Delete">✕</button>
+      <div class="entry-right">
+        <div class="entry-amt">${fmt(e.amt)}</div>
+        <button class="entry-del" onclick="delEntry('${e.id}','${ledgerType}')" aria-label="Delete">✕</button>
+      </div>
     </div>`;
   }).join('');
 }
 
 /* ══ RENDER INV SUB ══ */
-function renderInvSubPage(){
+function renderInvSub(){
   const m=curM();
   const total=investments.filter(e=>e.month===m).reduce((s,e)=>s+e.amt,0);
   const remaining=Math.max(0,INV_TARGET-total);
-  document.getElementById('invMonthTotal').textContent=fmt(total);
-  document.getElementById('invMonthSub').textContent=`Target: ${fmt(INV_TARGET)} · ${fmt(remaining)} remaining`;
-  document.getElementById('invProgFill').style.width=pct(total,INV_TARGET)+'%';
+  const p=pct(total,INV_TARGET);
+  document.getElementById('invHeroVal').textContent=fmt(total);
+  document.getElementById('invHeroSub').textContent=(total>=INV_TARGET?'✓ Monthly target met!':fmt(remaining)+' remaining this month');
+  document.getElementById('invHeroFill').style.width=p+'%';
 }
 
 /* ══ RENDER EF SUB ══ */
-function renderEFSubPage(){
+function renderEFSub(){
   const m=curM();
-  const allEF=emergencyFund.reduce((s,e)=>s+e.amt,0);
-  const totalBal=EF_STARTING+allEF;
-  const mEF=emergencyFund.filter(e=>e.month===m).reduce((s,e)=>s+e.amt,0);
-  const mPct=pct(mEF,EF_TARGET_MONTHLY);
-  const mRemaining=Math.max(0,EF_TARGET_MONTHLY-mEF);
-  document.getElementById('efTotalBal').textContent=fmt(totalBal);
-  document.getElementById('efBalSub').textContent=`Starting ₹3,50,000 + ${fmt(allEF)} deposits`;
-  document.getElementById('efBalFill').style.width=pct(totalBal,EF_TOTAL_TARGET)+'%';
-  document.getElementById('efMLabel').textContent=fmt(mEF)+' deposited';
-  document.getElementById('efMPct').textContent=mPct+'%';
-  document.getElementById('efMFill').style.width=mPct+'%';
-  document.getElementById('efMSub').textContent=mRemaining>0?fmt(mRemaining)+' remaining this month':'✓ Monthly target met!';
+  const allDeposits=emergencyFund.reduce((s,e)=>s+e.amt,0);
+  const totalBal=EF_START+allDeposits;
+  const balPct=pct(totalBal,EF_TOTAL_TARGET);
+  const mDeposits=emergencyFund.filter(e=>e.month===m).reduce((s,e)=>s+e.amt,0);
+  const mPct=pct(mDeposits,EF_MONTHLY);
+  document.getElementById('efHeroVal').textContent=fmt(totalBal);
+  document.getElementById('efHeroSub').textContent='Starting ₹3,50,000 + '+fmt(allDeposits)+' deposited';
+  document.getElementById('efHeroFill').style.width=balPct+'%';
+  document.getElementById('efHeroPct').textContent=balPct+'%';
+  document.getElementById('efHeroLeft').textContent=fmt(Math.max(0,EF_TOTAL_TARGET-totalBal));
+  document.getElementById('efMonthLabel').textContent=fmt(mDeposits)+' this month';
+  document.getElementById('efMonthPct').textContent=mPct+'% of '+fmt(EF_MONTHLY);
+  document.getElementById('efMonthFill').style.width=mPct+'%';
 }
 
 /* ══ RENDER DASHBOARD ══ */
 function renderDash(){
-  const m=curM();
+  const m=curM(),td=today();
   const mExp=expenses.filter(e=>e.month===m);
   const mInv=investments.filter(e=>e.month===m);
   const mEF=emergencyFund.filter(e=>e.month===m);
-  const totalExp=mExp.reduce((s,e)=>s+e.amt,0);
-  const totalInv=mInv.reduce((s,e)=>s+e.amt,0);
-  const totalEF=mEF.reduce((s,e)=>s+e.amt,0);
+  const tExp=mExp.reduce((s,e)=>s+e.amt,0);
+  const tInv=mInv.reduce((s,e)=>s+e.amt,0);
+  const tEF=mEF.reduce((s,e)=>s+e.amt,0);
   const allEF=emergencyFund.reduce((s,e)=>s+e.amt,0);
-  const efBal=EF_STARTING+allEF;
-  const deployed=totalExp+totalInv+totalEF;
+  const efBal=EF_START+allEF;
+  const todayAmt=mExp.filter(e=>e.date===td).reduce((s,e)=>s+e.amt,0);
+  const deployed=tExp+tInv+tEF;
   const savePct=Math.max(0,Math.round((INCOME-deployed)/INCOME*100));
+  const ep=pct(tExp,BUDGET);
 
-  document.getElementById('dExp').textContent=fmt(totalExp);
-  document.getElementById('dExp').className='kpi-val '+(totalExp>BUDGET?'cr':'cp');
-  document.getElementById('dExpN').textContent='of '+fmt(BUDGET)+' · '+(totalExp>BUDGET?'OVER BUDGET':'left: '+fmt(BUDGET-totalExp));
-  document.getElementById('dInv').textContent=fmt(totalInv);
-  document.getElementById('dInvN').textContent='of '+fmt(INV_TARGET)+' · '+(totalInv>=INV_TARGET?'✓ target met':'left: '+fmt(INV_TARGET-totalInv));
-  document.getElementById('dEF').textContent=fmt(totalEF);
-  document.getElementById('dEFN').textContent='of '+fmt(EF_TARGET_MONTHLY)+' · '+(totalEF>=EF_TARGET_MONTHLY?'✓ target met':'left: '+fmt(EF_TARGET_MONTHLY-totalEF));
-  document.getElementById('dSav').textContent=savePct+'%';
+  // Hero
+  document.getElementById('hSpent').textContent=fmt(tExp);
+  document.getElementById('hSpentSub').textContent='of '+fmt(BUDGET)+' budget';
+  document.getElementById('hProgLeft').textContent=tExp>BUDGET?'Over by '+fmt(tExp-BUDGET):fmt(BUDGET-tExp)+' left';
+  document.getElementById('hProgPct').textContent=ep+'%';
+  const fill=document.getElementById('hProgFill');
+  fill.style.width=ep+'%';
+  fill.style.background=ep>90?'linear-gradient(90deg,#F87171,#EF4444)':ep>70?'linear-gradient(90deg,#FBBF24,#F59E0B)':'linear-gradient(90deg,#7C6EF5,#9D93F7)';
+  document.getElementById('hStatToday').textContent=fmt(todayAmt);
+  document.getElementById('hStatInv').textContent=fmt(tInv);
+  document.getElementById('hStatSav').textContent=savePct+'%';
 
-  document.getElementById('bkExp').textContent=fmt(totalExp);
-  document.getElementById('bkExpSub').textContent=pct(totalExp,BUDGET)+'% of budget';
-  document.getElementById('bkInv').textContent=fmt(totalInv);
-  document.getElementById('bkInvSub').textContent=pct(totalInv,INV_TARGET)+'% of target';
-  document.getElementById('bkEF').textContent=fmt(totalEF);
-  document.getElementById('bkEFSub').textContent=pct(totalEF,EF_TARGET_MONTHLY)+'% of target';
+  // Buckets
+  document.getElementById('bkExp').textContent=fmt(tExp);
+  document.getElementById('bkExpPct').textContent=pct(tExp,BUDGET)+'% used';
+  document.getElementById('bkInv').textContent=fmt(tInv);
+  document.getElementById('bkInvPct').textContent=pct(tInv,INV_TARGET)+'% of target';
+  document.getElementById('bkEF').textContent=fmt(tEF);
+  document.getElementById('bkEFPct').textContent=pct(tEF,EF_MONTHLY)+'% of target';
 
-  const ep=pct(totalExp,BUDGET);
-  document.getElementById('progLabel').textContent=fmt(totalExp)+' spent';
-  document.getElementById('progPct').textContent=ep+'%';
-  document.getElementById('progFill').style.width=ep+'%';
-  document.getElementById('progFill').style.background=ep>90?'var(--red)':ep>70?'var(--amber)':'var(--green)';
-  document.getElementById('progSub').textContent=(BUDGET-totalExp)>=0?fmt(BUDGET-totalExp)+' remaining':'Over budget by '+fmt(totalExp-BUDGET);
+  // Mini progress
+  document.getElementById('mpExpVals').textContent=fmt(tExp)+' / '+fmt(BUDGET);
+  document.getElementById('mpExpFill').style.width=ep+'%';
+  document.getElementById('mpExpFill').style.background=ep>90?'var(--red)':ep>70?'var(--amber)':'var(--accent)';
+  document.getElementById('mpInvVals').textContent=fmt(tInv)+' / '+fmt(INV_TARGET);
+  document.getElementById('mpInvFill').style.width=pct(tInv,INV_TARGET)+'%';
+  document.getElementById('mpEFVals').textContent=fmt(tEF)+' / '+fmt(EF_MONTHLY);
+  document.getElementById('mpEFFill').style.width=pct(tEF,EF_MONTHLY)+'%';
 
+  // EF all-time
   const efp=pct(efBal,EF_TOTAL_TARGET);
-  document.getElementById('efTotalLabel').textContent='Total saved: '+fmt(efBal);
-  document.getElementById('efTotalPct').textContent=efp+'%';
-  document.getElementById('efTotalFill').style.width=efp+'%';
-  document.getElementById('efTotalSub').textContent='Target: '+fmt(EF_TOTAL_TARGET)+' · '+fmt(Math.max(0,EF_TOTAL_TARGET-efBal))+' to go';
+  document.getElementById('efAllLabel').textContent=fmt(efBal)+' saved';
+  document.getElementById('efAllPct').textContent=efp+'%';
+  document.getElementById('efAllFill').style.width=efp+'%';
 
-  const ct={};
-  mExp.forEach(e=>{ct[e.cat]=(ct[e.cat]||0)+e.amt;});
+  // Cat bars
+  const ct={};mExp.forEach(e=>{ct[e.cat]=(ct[e.cat]||0)+e.amt;});
   const active=Object.entries(ct).sort((a,b)=>b[1]-a[1]);
-  const barsEl=document.getElementById('dashBars');
-  if(!active.length){barsEl.innerHTML='<div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No expenses logged yet</div>';}
+  const barsEl=document.getElementById('catBarsWrap');
+  if(!active.length){barsEl.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:8px 0;">Log expenses to see breakdown</div>';}
   else{barsEl.innerHTML=active.map(([cat,spent])=>{
     const info=CATS[cat]||CATS['Other'];
-    const p=info.b>0?pct(spent,info.b):100;
+    const p2=info.b>0?pct(spent,info.b):100;
     const over=info.b>0&&spent>info.b;
-    return `<div class="bar-row"><div class="bar-label">${cat}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${over?'var(--red)':info.c};"></div></div><div class="bar-val" style="color:${over?'var(--red)':'var(--text-faint)'};">${fmt(spent)}${info.b?' / '+fmt(info.b):''}</div></div>`;
+    return `<div class="cat-bar-row">
+      <div class="cat-bar-dot" style="background:${info.c};"></div>
+      <div class="cat-bar-label">${cat}</div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${p2}%;background:${over?'var(--red)':info.c};"></div></div>
+      <div class="cat-bar-amt" style="color:${over?'var(--red)':'var(--text3)'};">${fmt(spent)}</div>
+    </div>`;
   }).join('');}
 
-  const it={};
-  mInv.forEach(e=>{it[e.type]=(it[e.type]||0)+e.amt;});
-  const invActive=Object.entries(it).sort((a,b)=>b[1]-a[1]);
-  const invBarsEl=document.getElementById('invBars');
-  if(!invActive.length){invBarsEl.innerHTML='<div style="font-size:13px;color:var(--text-faint);text-align:center;padding:8px 0;">No investments logged yet</div>';}
-  else{invBarsEl.innerHTML=invActive.map(([type,amt])=>`<div class="bar-row"><div class="bar-label">${type}</div><div class="bar-track"><div class="bar-fill" style="width:${pct(amt,INV_TARGET)}%;background:${INV_COLORS[type]||'#888'};"></div></div><div class="bar-val">${fmt(amt)}</div></div>`).join('');}
-
+  // Donut
   const canvas=document.getElementById('donut');
   const ctx=canvas.getContext('2d');
   const legendEl=document.getElementById('donutLegend');
   if(!active.length){
-    ctx.clearRect(0,0,120,120);
-    ctx.beginPath();ctx.arc(60,60,50,0,Math.PI*2);
-    ctx.strokeStyle='#f0f0ee';ctx.lineWidth=16;ctx.stroke();
-    legendEl.innerHTML='<div style="font-size:13px;color:var(--text-faint);">Log expenses to see breakdown</div>';
+    ctx.clearRect(0,0,110,110);
+    ctx.beginPath();ctx.arc(55,55,45,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,0.07)';ctx.lineWidth=14;ctx.stroke();
+    legendEl.innerHTML='<div style="font-size:13px;color:var(--text3);">Log expenses to see</div>';
     return;
   }
-  ctx.clearRect(0,0,120,120);
+  ctx.clearRect(0,0,110,110);
   let sa=-Math.PI/2;
   active.forEach(([cat,amt])=>{
     const info=CATS[cat]||CATS['Other'];
-    const slice=(amt/totalExp)*Math.PI*2;
-    ctx.beginPath();ctx.moveTo(60,60);ctx.arc(60,60,50,sa,sa+slice);ctx.closePath();ctx.fillStyle=info.c;ctx.fill();
+    const slice=(amt/tExp)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(55,55);ctx.arc(55,55,45,sa,sa+slice);
+    ctx.closePath();ctx.fillStyle=info.c;ctx.fill();
     sa+=slice;
   });
-  ctx.beginPath();ctx.arc(60,60,32,0,Math.PI*2);ctx.fillStyle='#f5f5f4';ctx.fill();
-  ctx.fillStyle='#1a1a1a';ctx.font='bold 11px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(fmt(totalExp),60,58);
-  ctx.fillStyle='#a0a0a0';ctx.font='9px -apple-system,sans-serif';ctx.fillText('expenses',60,72);
-  legendEl.innerHTML=active.slice(0,6).map(([cat,amt])=>{
+  ctx.beginPath();ctx.arc(55,55,30,0,Math.PI*2);ctx.fillStyle='#12121A';ctx.fill();
+  ctx.fillStyle='#F0F0F8';ctx.font='bold 10px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(fmt(tExp),55,52);
+  ctx.fillStyle='rgba(240,240,248,0.4)';ctx.font='8px -apple-system,sans-serif';ctx.fillText('total',55,65);
+  legendEl.innerHTML=active.slice(0,5).map(([cat,amt])=>{
     const info=CATS[cat]||CATS['Other'];
-    return `<div class="leg-row"><div class="leg-dot" style="background:${info.c};"></div><div class="leg-name">${cat}</div><div class="leg-amt">${fmt(amt)}</div><div class="leg-pct">${Math.round(amt/totalExp*100)}%</div></div>`;
+    return `<div class="leg-row"><div class="leg-dot" style="background:${info.c};"></div><div class="leg-name">${cat}</div><div class="leg-amt">${fmt(amt)}</div><div class="leg-pct">${Math.round(amt/tExp*100)}%</div></div>`;
   }).join('');
 }
 
 /* ══ MONTH SELECTOR ══ */
 function buildMonthSelector(){
-  const allMonths=[...expenses,...investments,...emergencyFund].map(e=>e.month);
-  const months=[...new Set(allMonths)].sort().reverse();
-  const cur=curM();
-  if(!months.includes(cur)) months.unshift(cur);
+  const all=[...expenses,...investments,...emergencyFund].map(e=>e.month);
+  const months=[...new Set(all)].sort().reverse();
+  const cur=curM();if(!months.includes(cur))months.unshift(cur);
   const sel=document.getElementById('csvMonth');
   sel.innerHTML=months.map(m=>{
-    const [y,mo]=m.split('-');
-    const label=new Date(y,mo-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
-    return `<option value="${m}">${label}</option>`;
+    const[y,mo]=m.split('-');
+    return `<option value="${m}">${new Date(y,mo-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</option>`;
   }).join('');
 }
 
 /* ══ CSV ══ */
 window.downloadCSV=()=>{
   const month=document.getElementById('csvMonth').value;
-  const [y,mo]=month.split('-');
+  const[y,mo]=month.split('-');
   const label=new Date(y,mo-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
   const mExp=expenses.filter(e=>e.month===month);
   const mInv=investments.filter(e=>e.month===month);
@@ -745,23 +1165,18 @@ window.downloadCSV=()=>{
   mInv.forEach(e=>lines.push(`${e.date},"${e.desc}","${e.type}",${e.amt}`));
   lines.push(`,,Total,${mInv.reduce((s,e)=>s+e.amt,0)}`,'','EMERGENCY FUND','Date,Description,Amount');
   mEF.forEach(e=>lines.push(`${e.date},"${e.desc}",${e.amt}`));
-  lines.push(`,Total,${mEF.reduce((s,e)=>s+e.amt,0)}`,'','SUMMARY',`Income,${INCOME}`,`Expenses,${mExp.reduce((s,e)=>s+e.amt,0)},Budget,${BUDGET}`,`Investments,${mInv.reduce((s,e)=>s+e.amt,0)},Target,${INV_TARGET}`,`Emergency Fund,${mEF.reduce((s,e)=>s+e.amt,0)},Target,${EF_TARGET_MONTHLY}`);
+  lines.push(`,Total,${mEF.reduce((s,e)=>s+e.amt,0)}`,'','SUMMARY',`Income,${INCOME}`,`Expenses,${mExp.reduce((s,e)=>s+e.amt,0)},Budget,${BUDGET}`,`Investments,${mInv.reduce((s,e)=>s+e.amt,0)},Target,${INV_TARGET}`,`Emergency Fund,${mEF.reduce((s,e)=>s+e.amt,0)},Target,${EF_MONTHLY}`);
   const blob=new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement('a');
+  const url=URL.createObjectURL(blob);const link=document.createElement('a');
   link.href=url;link.download=`BCE_${month}.csv`;
-  document.body.appendChild(link);link.click();
-  document.body.removeChild(link);URL.revokeObjectURL(url);
-  toast('Downloaded: BCE_'+month+'.csv');
+  document.body.appendChild(link);link.click();document.body.removeChild(link);URL.revokeObjectURL(url);
+  toast('Exported: BCE_'+month+'.csv');
 };
 
 /* ══ INIT ══ */
-document.getElementById('monthChip').textContent=new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+document.getElementById('monthBadge').textContent=new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'});
 ['expDate','invDate','efDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today();});
-buildExpPills();buildInvTypePills();
-
-// Load from localStorage
-load();renderDash();renderEFSubPage();renderInvSubPage();buildMonthSelector();
+load();buildExpPills();buildInvTypePills();buildMonthSelector();renderDash();renderEFSub();renderInvSub();
 </script>
 </body>
 </html>
